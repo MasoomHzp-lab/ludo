@@ -416,8 +416,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Board
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1197,8 +1197,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Shop
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1747,7 +1747,7 @@ MonoBehaviour:
   m_text: Friendly Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_sharedMaterial: {fileID: -6160082783889553375, guid: 5aeb059b6f9676242803321585346120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1966,8 +1966,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Daily
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2102,8 +2102,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Clan
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2942,7 +2942,7 @@ MonoBehaviour:
   m_text: Play OFFline
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_sharedMaterial: {fileID: -6160082783889553375, guid: 5aeb059b6f9676242803321585346120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3078,7 +3078,7 @@ MonoBehaviour:
   m_text: Online Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5aeb059b6f9676242803321585346120, type: 2}
-  m_sharedMaterial: {fileID: 3150996814166845576, guid: 5aeb059b6f9676242803321585346120, type: 2}
+  m_sharedMaterial: {fileID: -6160082783889553375, guid: 5aeb059b6f9676242803321585346120, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
