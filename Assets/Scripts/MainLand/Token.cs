@@ -1,60 +1,69 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 public class Token : MonoBehaviour
 {
-   public PlayerColor color;
-    public int currentIndex = -1; // -1 یعنی هنوز تو Base هست
-    public bool isFinished = false;
-
-    private BoardManager board;
-    private List<Transform> myPath;
+       [Header("تنظیمات عمومی")]
+    public PlayerColor color;              // رنگ مهره
+    public BoardManager boardManager;      // ارجاع به BoardManager (در Inspector ست کن)
+    
+    private List<Transform> path;          // مسیر اختصاصی این مهره
+    private int currentTileIndex = -1;
+    private bool isMoving = false;
 
     private void Start()
     {
-        board = FindObjectOfType<BoardManager>();
-        myPath = board.GetFullPath(color);
+        if (boardManager == null)
+        {
+            boardManager = FindFirstObjectByType<BoardManager>();
+        }
+
+        // مسیر اختصاصی مهره از روی رنگ
+        path = boardManager.GetFullPath(color);
+
+        // تنظیم موقعیت اولیه (اگر خواستی از خونه خانه شروع کن)
+        transform.position = path[0].position;
+        currentTileIndex = 0;
     }
 
-    public IEnumerator MoveSteps(int steps)
+    public void MoveSteps(int steps)
     {
-        if (isFinished) yield break;
+        if (isMoving) return;
+        StartCoroutine(MoveCoroutine(steps));
+    }
 
-        // اگر هنوز تو Base هست و تاس 6 اومده:
-        if (currentIndex == -1)
-        {
-            if (steps == 6)
-            {
-                currentIndex = 0;
-                yield return MoveToPosition(myPath[currentIndex].position);
-            }
-            yield break;
-        }
+    private IEnumerator MoveCoroutine(int steps)
+    {
+        isMoving = true;
 
         for (int i = 0; i < steps; i++)
         {
-            int nextIndex = currentIndex + 1;
-            if (nextIndex >= myPath.Count)
-            {
-                isFinished = true;
-                yield break;
-            }
+            int nextIndex = currentTileIndex + 1;
 
-            yield return MoveToPosition(myPath[nextIndex].position);
-            currentIndex = nextIndex;
+            // بررسی رسیدن به انتهای مسیر
+            if (nextIndex >= path.Count)
+                break;
+
+            Vector3 nextPos = path[nextIndex].position;
+            yield return MoveTo(nextPos, 0.25f);
+
+            currentTileIndex = nextIndex;
         }
+
+        isMoving = false;
     }
 
-    IEnumerator MoveToPosition(Vector3 target)
+    private IEnumerator MoveTo(Vector3 target, float duration)
     {
         Vector3 start = transform.position;
         float elapsed = 0f;
-        float duration = 0.25f;
 
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
             transform.position = Vector3.Lerp(start, target, elapsed / duration);
+            elapsed += Time.deltaTime;
             yield return null;
         }
 

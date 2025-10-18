@@ -1,14 +1,9 @@
-
-using UnityEngine;
 using System.Collections.Generic;
-
-
-
-public enum PlayerColor { Red, Blue, Green, Yellow }
+using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-    [Header("Common Path (shared 52 tiles)")]
+   [Header("Common Path (shared 52 tiles)")]
     public List<Transform> commonPath = new();
 
     [Header("Each color's final 6 tiles")]

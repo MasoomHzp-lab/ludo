@@ -1,39 +1,79 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-   public List<PlayerController> players = new();
-    private int currentPlayerIndex = 0;
+    [Header("ارجاعات اصلی")]
+    public Dice dice;                           // تاس اصلی بازی
+    public BoardManager boardManager;           // زمین بازی (خونه‌ها)
+    public List<PlayerController> players;      // لیست همه بازیکن‌ها
+
+    [Header("تنظیمات بازی")]
+    public int currentPlayerIndex = 0;          // نوبت کیه
+    public bool gameActive = true;
 
     private void Start()
     {
-        StartCoroutine(RunTurn());
+        // اتصال رویداد تاس به مدیریت بازی
+        dice.OnDiceRolled += HandleDiceRolled;
+
+        // شروع با بازیکن اول
+        SetCurrentPlayer(0);
     }
 
-    IEnumerator RunTurn()
+    private void SetCurrentPlayer(int index)
     {
-        var player = players[currentPlayerIndex];
-        int dice = Random.Range(1, 7);
-        Debug.Log($"{player.color} rolled {dice}");
+        // ایمن: نکنه عدد از محدوده بزنه بیرون
+        if (index < 0 || index >= players.Count) return;
 
-        var movable = player.GetMovableTokens(dice);
+        currentPlayerIndex = index;
 
-        if (movable.Count > 0)
+        // قفل/آزاد کردن تاس
+        EnableDiceForCurrentPlayer(true);
+
+        Debug.Log($"نوبت بازیکن: {players[currentPlayerIndex].playerName}");
+    }
+
+    private void EnableDiceForCurrentPlayer(bool enable)
+    {
+        dice.gameObject.SetActive(enable);
+    }
+
+    private void HandleDiceRolled(int rolledNumber)
+    {
+        // وقتی تاس انداخته شد، قفلش کن تا بازیکن بعدی نوبت بگیره
+        EnableDiceForCurrentPlayer(false);
+
+        Debug.Log($"عدد تاس برای {players[currentPlayerIndex].playerName}: {rolledNumber}");
+
+        // حرکت مهره فعلی با عدد تاس
+        players[currentPlayerIndex].MoveToken(0, rolledNumber);
+
+        // بعد از حرکت مهره، صبر کن تا انیمیشن تموم شه
+        Invoke(nameof(NextTurn), 2f);
+    }
+
+    private void NextTurn()
+    {
+        if (!gameActive) return;
+
+        // بعدی در لیست
+        currentPlayerIndex++;
+
+        // اگه آخر لیست بود، برگرد به اول
+        if (currentPlayerIndex >= players.Count)
+            currentPlayerIndex = 0;
+
+        SetCurrentPlayer(currentPlayerIndex);
+    }
+
+    public void CheckForWinner(PlayerController player)
+    {
+        // در آینده: بررسی کن مهره‌های همه‌اش به خونه آخر رسیدن یا نه
+        if (player.HasAllTokensFinished())
         {
-            yield return StartCoroutine(movable[0].MoveSteps(dice));
-
-            if (dice == 6)
-            {
-                yield return new WaitForSeconds(0.3f);
-                StartCoroutine(RunTurn());
-                yield break;
-            }
+            gameActive = false;
+            Debug.Log($"🏆 {player.playerName} برنده شد!");
         }
-
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
-        yield return new WaitForSeconds(0.3f);
-        StartCoroutine(RunTurn());
     }
 }
