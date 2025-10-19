@@ -1,79 +1,91 @@
-using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header(" Original references ")]
-    public Dice dice;                           // تاس اصلی بازی
-    public BoardManager boardManager;           // زمین بازی (خونه‌ها)
-    public List<PlayerController> players;      // لیست همه بازیکن‌ها
+     [Header("Players (order of turns)")]
+    public List<PlayerController> players = new List<PlayerController>();
 
-    [Header(" Game Setting ")]
-    public int currentPlayerIndex = 0;          // نوبت کیه
-    public bool gameActive = true;
+    [Header("Dice")]
+    public Dice dice; // در Inspector ست شود
+
+    public PlayerController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
+
+    private int currentPlayerIndex = 0;
+    private int lastDice = 0;
+    private Token pendingSelected = null;
+
+    private void Awake()
+    {
+        if (dice == null)
+            Debug.LogError("[GameManager] DiceController ست نشده.");
+
+        // هر Player باید به همین GameManager لینک باشد
+        foreach (var p in players)
+            if (p != null && p.gameManager != this)
+                p.gameManager = this;
+    }
+
+    private void OnEnable()
+    {
+        if (dice != null)
+            dice.OnDiceRolled += HandleDiceRolled;
+    }
+
+    private void OnDisable()
+    {
+        if (dice != null)
+            dice.OnDiceRolled -= HandleDiceRolled;
+    }
 
     private void Start()
     {
-        // اتصال رویداد تاس به مدیریت بازی
-        dice.OnDiceRolled += HandleDiceRolled;
-
-        // شروع با بازیکن اول
         SetCurrentPlayer(0);
     }
 
     private void SetCurrentPlayer(int index)
     {
-        // ایمن: نکنه عدد از محدوده بزنه بیرون
-        if (index < 0 || index >= players.Count) return;
-
-        currentPlayerIndex = index;
-
-        // قفل/آزاد کردن تاس
-        EnableDiceForCurrentPlayer(true);
-
-        Debug.Log($"player turn : {players[currentPlayerIndex].playerName}");
+        currentPlayerIndex = Mathf.Clamp(index, 0, players.Count - 1);
+        lastDice = 0;
+        pendingSelected = null;
+        Debug.Log($"نوبت: {CurrentPlayer.playerName}");
     }
 
-    private void EnableDiceForCurrentPlayer(bool enable)
+    private void HandleDiceRolled(int steps)
     {
-        dice.gameObject.SetActive(enable);
+        lastDice = steps;
+        Debug.Log($"[{CurrentPlayer.playerName}] مقدار تاس: {steps}. حالا روی یکی از مهره‌های {CurrentPlayer.playerName} کلیک کن.");
     }
 
-    private void HandleDiceRolled(int rolledNumber)
+    // از Token صدا زده می‌شود
+    public void OnTokenSelected(Token token)
     {
-        // وقتی تاس انداخته شد، قفلش کن تا بازیکن بعدی نوبت بگیره
-        EnableDiceForCurrentPlayer(false);
-
-        Debug.Log($" dice   {players[currentPlayerIndex].playerName}: {rolledNumber}");
-
-        // حرکت مهره فعلی با عدد تاس
-        players[currentPlayerIndex].MoveToken(0, rolledNumber);
-
-        // بعد از حرکت مهره، صبر کن تا انیمیشن تموم شه
-        Invoke(nameof(NextTurn), 2f);
-    }
-
-    private void NextTurn()
-    {
-        if (!gameActive) return;
-
-        // بعدی در لیست
-        currentPlayerIndex++;
-
-        // اگه آخر لیست بود، برگرد به اول
-        if (currentPlayerIndex >= players.Count)
-            currentPlayerIndex = 0;
-
-        SetCurrentPlayer(currentPlayerIndex);
-    }
-
-    public void CheckForWinner(PlayerController player)
-    {
-        // در آینده: بررسی کن مهره‌های همه‌اش به خونه آخر رسیدن یا نه
-        if (player.HasAllTokensFinished())
+        if (token == null) return;
+        if (token.owner != CurrentPlayer) return;
+        if (lastDice <= 0)
         {
-            gameActive = false;
-            Debug.Log($"🏆 {player.playerName}  winner ");
+            Debug.Log("اول تاس بریز، بعد مهره رو انتخاب کن.");
+            return;
         }
+
+        if (CurrentPlayer.MoveToken(token, lastDice))
+        {
+            pendingSelected = token;
+            StartCoroutine(WaitAndNextTurn());
+        }
+    }
+
+    private IEnumerator WaitAndNextTurn()
+    {
+        // صبر تا پایان حرکت هر مهره‌ی فعلی
+        while (CurrentPlayer.IsMoving())
+            yield return null;
+
+        // TODO: قوانین ویژه (جایزه گرفتن 6، خوردن مهره‌ی حریف، ورود به خانه‌ی پایان...) را اینجا اعمال کن
+
+        // نوبت بعدی
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        SetCurrentPlayer(currentPlayerIndex);
     }
 }

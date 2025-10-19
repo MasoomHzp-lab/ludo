@@ -11,78 +11,71 @@ public enum PlayerColor
 }
 public class PlayerController : MonoBehaviour
 {
-
-   [Header("Player Info")]
+  [Header("Player Info")]
     public string playerName;
     public PlayerColor color;
 
     [Header("References")]
     public BoardManager boardManager;
+    public GameManager gameManager;           // حتما در Inspector ست شود
     public GameObject tokenPrefab;
 
-    [Header("Spawn Points for Tokens")]
-    public List<Transform> spawnPoints = new List<Transform>(); // ۴ تا نقطه مشخص در Inspector
+    [Header("Spawn Points (exactly 4)")]
+    public List<Transform> spawnPoints = new List<Transform>();
 
-    private List<Token> tokens = new List<Token>();
-    private bool isMoving = false;
+    private readonly List<Token> tokens = new List<Token>();
 
     private void Start()
-{
-    if (spawnPoints.Count < 1)
     {
-        Debug.LogError($"{playerName} هیچ spawn pointی ندارد!");
-        return;
-    }
+        if (boardManager == null) { Debug.LogError($"{playerName}: BoardManager ست نیست."); return; }
+        if (gameManager == null)  { Debug.LogError($"{playerName}: GameManager ست نیست."); return; }
 
-    int tokenCount = Mathf.Min(4, spawnPoints.Count);
-
-    for (int i = 0; i < tokenCount; i++)
-    {
-        GameObject tokenObj = Instantiate(tokenPrefab, spawnPoints[i].position, Quaternion.identity);
-        Token token = tokenObj.GetComponent<Token>();
-        token.color = color;
-        token.Initialize(boardManager);
-
-        tokenObj.name = $"{playerName}_Token_{i + 1}";
-        tokens.Add(token);
-    }
-
-    if (tokenCount < 4)
-        Debug.LogWarning($"{playerName} فقط {tokenCount} مهره ساخته شد، باید ۴ تا spawn point داشته باشه!");
-}
-
-    public void MoveToken(int tokenIndex, int steps)
-    {
-        if (isMoving || tokenIndex < 0 || tokenIndex >= tokens.Count) return;
-
-        Token token = tokens[tokenIndex];
-        if (token != null)
+        if (spawnPoints.Count != 4)
         {
-            isMoving = true;
-            token.MoveSteps(steps);
-            StartCoroutine(WaitForToken(token));
+            Debug.LogError($"{playerName}: باید دقیقاً ۴ SpawnPoint بدهی.");
+            return;
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            var obj = Instantiate(tokenPrefab, spawnPoints[i].position, Quaternion.identity);
+            obj.name = $"{playerName}_Token_{i+1}";
+
+            var token = obj.GetComponent<Token>();
+            if (token == null)
+            {
+                Debug.LogError($"{playerName}: Token prefab اسکریپت Token ندارد!");
+                continue;
+            }
+
+            token.color = color;
+            token.Initialize(boardManager, this, gameManager);
+            tokens.Add(token);
         }
     }
 
-    private IEnumerator WaitForToken(Token token)
+    public List<Token> GetTokens() => tokens;
+
+    public bool IsMoving()
     {
-        while (token.isMoving)
-            yield return null;
-        isMoving = false;
+        foreach (var t in tokens) if (t.isMoving) return true;
+        return false;
+    }
+
+    public bool MoveToken(Token token, int steps)
+    {
+        if (token == null || token.isMoving) return false;
+        if (!tokens.Contains(token)) return false; // فقط مهره‌های خودش
+        token.MoveSteps(steps);
+        return true;
     }
 
     public bool HasAllTokensFinished()
     {
+        var pathLen = boardManager.GetFullPath(color).Count;
         foreach (var t in tokens)
-        {
-            if (t.currentTileIndex < boardManager.GetFullPath(color).Count - 1)
-                return false;
-        }
-        return true;
-    }
+            if (t.currentTileIndex < pathLen - 1) return false;
 
-    public List<Token> GetTokens()
-    {
-        return tokens;
+        return true;
     }
 }

@@ -5,57 +5,74 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
-     public PlayerColor color;              // رنگ مهره
-    public int currentTileIndex = -1;      // موقعیت فعلی در مسیر
-    public bool isMoving = false;
-    public bool isAtHome = true;
+    [HideInInspector] public PlayerColor color;
+    [HideInInspector] public int currentTileIndex = -1; // -1 یعنی هنوز روی برد نیست (خانه)
+    [HideInInspector] public bool isMoving = false;
+    [HideInInspector] public bool isOnBoard = false;
 
-    private List<Transform> path;          // مسیر مخصوص این رنگ
+    private BoardManager boardManager;
+    [HideInInspector] public PlayerController owner;
+    private GameManager gameManager;
 
-    public void Initialize(BoardManager board)
+    public void Initialize(BoardManager manager, PlayerController player, GameManager gm)
     {
-        // مسیر مخصوص رنگ فعلی رو از BoardManager می‌گیریم
-        path = board.GetFullPath(color);
+        boardManager = manager;
+        owner = player;
+        gameManager = gm;
+        isOnBoard = false;          // از خانه شروع می‌کند
+        currentTileIndex = -1;      // هنوز وارد مسیر نشده
+    }
+
+    private void OnMouseDown()
+    {
+        if (gameManager == null || owner == null) return;
+        if (gameManager.CurrentPlayer != owner) return;
+        if (isMoving) return;
+
+        gameManager.OnTokenSelected(this);
     }
 
     public void MoveSteps(int steps)
     {
-        if (isMoving || path == null) return;
-        StartCoroutine(MoveCoroutine(steps));
+        if (!gameManager) return;
+        if (!isMoving)
+            gameManager.StartCoroutine(MoveCoroutine(steps)); // از GameManager coroutine اجرا شود
     }
 
     private IEnumerator MoveCoroutine(int steps)
     {
         isMoving = true;
 
+        // اگر مهره هنوز وارد زمین نشده، اول ببریمش خانه‌ی شروع مسیر
+        if (!isOnBoard)
+        {
+            currentTileIndex = 0;
+            Vector3 startPos = boardManager.GetTilePosition(color, currentTileIndex);
+            transform.position = startPos;
+            isOnBoard = true;
+
+            // اگر قوانینت ایجاب می‌کند که با ورود، یک قدم هم جلو برود:
+            // اگر می‌خواهی ورود هم جزو steps حساب شود، steps -= 1;
+        }
+
         for (int i = 0; i < steps; i++)
         {
             currentTileIndex++;
-
+            var path = boardManager.GetFullPath(color);
             if (currentTileIndex >= path.Count)
             {
-                currentTileIndex = path.Count - 1;
+                currentTileIndex = path.Count - 1; // رسید به پایان
                 break;
             }
 
-            Vector3 nextPos = path[currentTileIndex].position;
-            yield return MoveTo(nextPos, 0.25f);
+            Vector3 target = boardManager.GetTilePosition(color, currentTileIndex);
+            while (Vector3.Distance(transform.position, target) > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5f);
+                yield return null;
+            }
         }
 
         isMoving = false;
-    }
-
-    private IEnumerator MoveTo(Vector3 target, float time)
-    {
-        Vector3 start = transform.position;
-        float elapsed = 0f;
-
-        while (elapsed < time)
-        {
-            transform.position = Vector3.Lerp(start, target, elapsed / time);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = target;
     }
 }

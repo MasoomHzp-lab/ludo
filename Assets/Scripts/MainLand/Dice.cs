@@ -1,49 +1,51 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class Dice : MonoBehaviour
 {
-[Header(" Dice picture ")]
-    public Sprite[] diceFaces; // ۶ تا تصویر
-    public Image diceImage;    // همون UI Image وسط زمین
+ [Header("Dice Settings")]
+    public Sprite[] diceSides;         // 6 تصویر
+    public int[] diceValues = new int[6]; // 6 مقدار متناظر
+    public Image diceImage;
 
-    [Header(" delay ")]
-    public float rollDuration = 0.8f;
+    [Header("Roll FX")]
+    public float rollDuration = 1f;
+    public float rollSpeed = 0.05f;
 
-    [HideInInspector] public int currentNumber;
-    [HideInInspector] public bool isRolling = false;
+    public event Action<int> OnDiceRolled;
 
-    public System.Action<int> OnDiceRolled; // رویداد برای ارتباط با GameManager
+    private bool isRolling = false;
 
-    public void OnDiceButtonClick()
+    public void RollDice()
     {
-        if (isRolling) return;
-        StartCoroutine(RollAnimation());
+        if (!isRolling && diceSides != null && diceSides.Length > 0)
+            StartCoroutine(RollRoutine());
     }
 
-    private IEnumerator RollAnimation()
+    private IEnumerator RollRoutine()
     {
         isRolling = true;
+        float t = 0f;
+        int idx = 0;
 
-        float elapsed = 0f;
-        int randomFace = 1;
-
-        // انیمیشن سریع تاس
-        while (elapsed < rollDuration)
+        while (t < rollDuration)
         {
-            randomFace = Random.Range(1, 7);
-            diceImage.sprite = diceFaces[randomFace - 1];
-            elapsed += 0.1f;
-            yield return new WaitForSeconds(0.1f);
+            idx = UnityEngine.Random.Range(0, diceSides.Length);
+            if (diceImage) diceImage.sprite = diceSides[idx];
+            t += rollSpeed;
+            yield return new WaitForSeconds(rollSpeed);
         }
 
-        // عدد نهایی
-        currentNumber = randomFace;
-        diceImage.sprite = diceFaces[currentNumber - 1];
+        idx = UnityEngine.Random.Range(0, diceSides.Length);
+        if (diceImage) diceImage.sprite = diceSides[idx];
 
-        // اطلاع بده به گیم‌منیجر که تاس افتاد
-        OnDiceRolled?.Invoke(currentNumber);
+        int steps = (diceValues != null && diceValues.Length == diceSides.Length)
+            ? diceValues[idx]
+            : (idx + 1); // fallback
 
+        OnDiceRolled?.Invoke(steps);
         isRolling = false;
     }
 }

@@ -3,50 +3,30 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
-   [Header("Common Path (shared 52 tiles)")]
-    public List<Transform> commonPath = new();
+    [System.Serializable]
+    public class PlayerPath
+    {
+        public PlayerColor color;
+        public List<Transform> tiles = new List<Transform>(); // ترتیب مهم است
+    }
 
-    [Header("Each color's final 6 tiles")]
-    public List<Transform> redHome = new();
-    public List<Transform> blueHome = new();
-    public List<Transform> greenHome = new();
-    public List<Transform> yellowHome = new();
-
-    [Header("Start indexes in common path")]
-    public int redStartIndex = 0;
-    public int blueStartIndex = 13;
-    public int greenStartIndex = 26;
-    public int yellowStartIndex = 39;
+    [Header("Paths (per player color)")]
+    public List<PlayerPath> playerPaths = new List<PlayerPath>();
 
     public List<Transform> GetFullPath(PlayerColor color)
     {
-        List<Transform> path = new();
-        int startIndex = 0;
+        foreach (var p in playerPaths)
+            if (p.color == color) return p.tiles;
 
-        switch (color)
-        {
-            case PlayerColor.Red: startIndex = redStartIndex; break;
-            case PlayerColor.Blue: startIndex = blueStartIndex; break;
-            case PlayerColor.Green: startIndex = greenStartIndex; break;
-            case PlayerColor.Yellow: startIndex = yellowStartIndex; break;
-        }
+        Debug.LogError($"[BoardManager] مسیر برای {color} پیدا نشد.");
+        return new List<Transform>();
+    }
 
-        // اضافه کردن مسیر مشترک از نقطه شروع مخصوص بازیکن
-        for (int i = 0; i < commonPath.Count; i++)
-        {
-            int index = (startIndex + i) % commonPath.Count;
-            path.Add(commonPath[index]);
-        }
-
-        // اضافه کردن مسیر خانه‌ی پایانی مخصوص رنگ
-        switch (color)
-        {
-            case PlayerColor.Red: path.AddRange(redHome); break;
-            case PlayerColor.Blue: path.AddRange(blueHome); break;
-            case PlayerColor.Green: path.AddRange(greenHome); break;
-            case PlayerColor.Yellow: path.AddRange(yellowHome); break;
-        }
-
-        return path;
+    public Vector3 GetTilePosition(PlayerColor color, int index)
+    {
+        var path = GetFullPath(color);
+        if (path == null || path.Count == 0) return Vector3.zero;
+        index = Mathf.Clamp(index, 0, path.Count - 1);
+        return path[index].position;
     }
 }
