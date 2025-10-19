@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Dice : MonoBehaviour
 {
-[Header("تصاویر تاس (از 1 تا 6)")]
+[Header(" Dice picture ")]
     public Sprite[] diceFaces; // ۶ تا تصویر
     public Image diceImage;    // همون UI Image وسط زمین
 
-    [Header("تاخیر در نمایش انیمیشن")]
+    [Header(" delay ")]
     public float rollDuration = 0.8f;
 
     [HideInInspector] public int currentNumber;

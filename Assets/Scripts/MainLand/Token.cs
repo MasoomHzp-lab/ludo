@@ -5,32 +5,22 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
-       [Header("تنظیمات عمومی")]
-    public PlayerColor color;              // رنگ مهره
-    public BoardManager boardManager;      // ارجاع به BoardManager (در Inspector ست کن)
-    
-    private List<Transform> path;          // مسیر اختصاصی این مهره
-    private int currentTileIndex = -1;
-    private bool isMoving = false;
+     public PlayerColor color;              // رنگ مهره
+    public int currentTileIndex = -1;      // موقعیت فعلی در مسیر
+    public bool isMoving = false;
+    public bool isAtHome = true;
 
-    private void Start()
+    private List<Transform> path;          // مسیر مخصوص این رنگ
+
+    public void Initialize(BoardManager board)
     {
-        if (boardManager == null)
-        {
-            boardManager = FindFirstObjectByType<BoardManager>();
-        }
-
-        // مسیر اختصاصی مهره از روی رنگ
-        path = boardManager.GetFullPath(color);
-
-        // تنظیم موقعیت اولیه (اگر خواستی از خونه خانه شروع کن)
-        transform.position = path[0].position;
-        currentTileIndex = 0;
+        // مسیر مخصوص رنگ فعلی رو از BoardManager می‌گیریم
+        path = board.GetFullPath(color);
     }
 
     public void MoveSteps(int steps)
     {
-        if (isMoving) return;
+        if (isMoving || path == null) return;
         StartCoroutine(MoveCoroutine(steps));
     }
 
@@ -40,33 +30,32 @@ public class Token : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            int nextIndex = currentTileIndex + 1;
+            currentTileIndex++;
 
-            // بررسی رسیدن به انتهای مسیر
-            if (nextIndex >= path.Count)
+            if (currentTileIndex >= path.Count)
+            {
+                currentTileIndex = path.Count - 1;
                 break;
+            }
 
-            Vector3 nextPos = path[nextIndex].position;
+            Vector3 nextPos = path[currentTileIndex].position;
             yield return MoveTo(nextPos, 0.25f);
-
-            currentTileIndex = nextIndex;
         }
 
         isMoving = false;
     }
 
-    private IEnumerator MoveTo(Vector3 target, float duration)
+    private IEnumerator MoveTo(Vector3 target, float time)
     {
         Vector3 start = transform.position;
         float elapsed = 0f;
 
-        while (elapsed < duration)
+        while (elapsed < time)
         {
-            transform.position = Vector3.Lerp(start, target, elapsed / duration);
+            transform.position = Vector3.Lerp(start, target, elapsed / time);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         transform.position = target;
     }
 }

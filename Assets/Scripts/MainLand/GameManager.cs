@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("ارجاعات اصلی")]
+    [Header(" Original references ")]
     public Dice dice;                           // تاس اصلی بازی
     public BoardManager boardManager;           // زمین بازی (خونه‌ها)
     public List<PlayerController> players;      // لیست همه بازیکن‌ها
 
-    [Header("تنظیمات بازی")]
+    [Header(" Game Setting ")]
     public int currentPlayerIndex = 0;          // نوبت کیه
     public bool gameActive = true;
 
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         // قفل/آزاد کردن تاس
         EnableDiceForCurrentPlayer(true);
 
-        Debug.Log($"نوبت بازیکن: {players[currentPlayerIndex].playerName}");
+        Debug.Log($"player turn : {players[currentPlayerIndex].playerName}");
     }
 
     private void EnableDiceForCurrentPlayer(bool enable)
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         // وقتی تاس انداخته شد، قفلش کن تا بازیکن بعدی نوبت بگیره
         EnableDiceForCurrentPlayer(false);
 
-        Debug.Log($"عدد تاس برای {players[currentPlayerIndex].playerName}: {rolledNumber}");
+        Debug.Log($" dice   {players[currentPlayerIndex].playerName}: {rolledNumber}");
 
         // حرکت مهره فعلی با عدد تاس
         players[currentPlayerIndex].MoveToken(0, rolledNumber);
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         if (player.HasAllTokensFinished())
         {
             gameActive = false;
-            Debug.Log($"🏆 {player.playerName} برنده شد!");
+            Debug.Log($"🏆 {player.playerName}  winner ");
         }
     }
 }
