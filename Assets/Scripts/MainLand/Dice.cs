@@ -18,6 +18,8 @@ public class Dice : MonoBehaviour
 
     private bool isRolling = false;
 
+    public PlayerController currentPlayer;
+
     public void RollDice()
     {
         if (!isRolling && diceSides != null && diceSides.Length > 0)
