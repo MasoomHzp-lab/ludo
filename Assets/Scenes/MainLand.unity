@@ -3406,6 +3406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376ddef2790e0524a9cbb990f952abd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  diceRollingSound: {fileID: 8300000, guid: 0fbf2bc290e9f5cf59433ea050c828b4, type: 3}
   diceSides:
   - {fileID: 7143586373401363173, guid: 3a1b399af3adea44594515703ec3246b, type: 3}
   - {fileID: -5081325018161094028, guid: cefcc192ef83b6946ba76f6adb0465eb, type: 3}

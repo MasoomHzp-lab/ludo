@@ -2,15 +2,19 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public static AudioManager Instance;
+    
+    
     [Header("Audio Source")]
 
-    [SerializeField] AudioSource musicSource;
-    [SerializeField] AudioSource SFXSource;
+    [SerializeField]public AudioSource musicSource;
+    [SerializeField]public AudioSource SFXSource;
 
     [Header("Audio Clip")]
 
     public AudioClip background;
     public AudioClip Button;
+     public AudioClip DiceSound;
 
     private void Start()
     {
@@ -18,6 +22,24 @@ public class AudioManager : MonoBehaviour
         musicSource.Play();
 
     }
+
+
+    void Awake()
+{
+      
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        
+        }
+}
+
 
 
     public void PlayButtonSound()

@@ -132,7 +132,7 @@ GameObject:
   - component: {fileID: 14345052}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,13 +146,13 @@ Transform:
   m_GameObject: {fileID: 14345049}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -252.42604, y: -250.57985, z: 0}
-  m_LocalScale: {x: 2.3668637, y: 2.3668637, z: 2.3668637}
+  m_LocalPosition: {x: 59.39852, y: 185.6416, z: 0}
+  m_LocalScale: {x: 0.95266265, y: 0.95266265, z: 0.95266265}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2116706797}
   - {fileID: 545541708}
-  m_Father: {fileID: 856449976}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &14345051
 MonoBehaviour:
@@ -169,7 +169,8 @@ MonoBehaviour:
   musicSource: {fileID: 2116706796}
   SFXSource: {fileID: 545541707}
   background: {fileID: 8300000, guid: 7250bbfe6d9ec6c1c8c7595fe952c5b6, type: 3}
-  Button: {fileID: 8300000, guid: 77027ac297ec57a429c71143d707b166, type: 3}
+  Button: {fileID: 8300000, guid: 71525bad24a234e06b185f026f128d50, type: 3}
+  DiceSound: {fileID: 8300000, guid: 0fbf2bc290e9f5cf59433ea050c828b4, type: 3}
 --- !u!114 &14345052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -924,6 +925,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 868926157}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: MainLand
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &440244790
@@ -2301,7 +2314,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 553101777}
-  - {fileID: 14345050}
   - {fileID: 1862642683}
   - {fileID: 2010394609}
   m_Father: {fileID: 0}
@@ -2321,6 +2333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 868926155}
   - component: {fileID: 868926156}
+  - component: {fileID: 868926157}
   m_Layer: 5
   m_Name: ButtonsObject
   m_TagString: Untagged
@@ -2363,6 +2376,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SettingPanel: {fileID: 1286415450}
+--- !u!114 &868926157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868926154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02687d41f18c8f0a1a45bea9f866e7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &895292603
 GameObject:
   m_ObjectHideFlags: 0
@@ -3416,7 +3441,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1749148547}
   m_Direction: 0
   m_MinValue: 0.0001
-  m_MaxValue: 1
+  m_MaxValue: 80
   m_WholeNumbers: 0
   m_Value: 0.0001
   m_OnValueChanged:
@@ -4797,7 +4822,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1633920625}
   m_Direction: 0
   m_MinValue: 0.0001
-  m_MaxValue: 1
+  m_MaxValue: 20
   m_WholeNumbers: 0
   m_Value: 0.0001
   m_OnValueChanged:
@@ -5471,3 +5496,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 856449976}
   - {fileID: 969649352}
+  - {fileID: 14345050}
