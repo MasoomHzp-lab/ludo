@@ -67,7 +67,9 @@ public class PlayerController : MonoBehaviour
         if (token == null || token.isMoving) return false;
         if (!tokens.Contains(token)) return false; // فقط مهره‌های خودش
         token.MoveSteps(steps);
+        PlayTokenSound();
         return true;
+        
     }
 
     public bool HasAllTokensFinished()
@@ -77,5 +79,13 @@ public class PlayerController : MonoBehaviour
             if (t.currentTileIndex < pathLen - 1) return false;
 
         return true;
+    }
+
+    public void PlayTokenSound()
+    {
+
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.TokenSound);
+
+
     }
 }

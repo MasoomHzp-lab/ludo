@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-     [Header("Players (order of turns)")]
+    [Header("Players (order of turns)")]
     public List<PlayerController> players = new List<PlayerController>();
 
     [Header("Dice")]
     public Dice dice; // must expose OnDiceRolled(int)
+
 
     public PlayerController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
 
@@ -71,71 +72,74 @@ public class GameManager : MonoBehaviour
         rolledSix = (steps == 6);
 
         if (!HasLegalMove(CurrentPlayer, lastDice))
-    {
-        Debug.Log("[GM] No legal move. Passing turn.");
-        StartCoroutine(PassTurnImmediately());
-        return;
-    }
+        {
+            Debug.Log("[GM] No legal move. Passing turn.");
+            StartCoroutine(PassTurnImmediately());
+            return;
+        }
 
         Debug.Log($"[{CurrentPlayer.playerName}] rolled: {steps}. Click one of {CurrentPlayer.playerName}'s tokens.");
     }
 
     // Called by Token.OnMouseDown()
     public void OnTokenSelected(Token token)
-{
-    if (token == null) return;
-    if (CurrentPlayer == null) return;
-    if (token.owner != CurrentPlayer) return;
-
-    if (lastDice <= 0)
     {
-        Debug.Log("[GM] Roll the dice first, then select a token.");
-        return;
-    }
+        if (token == null) return;
+        if (CurrentPlayer == null) return;
+        if (token.owner != CurrentPlayer) return;
 
-    // --- ENTER ONLY ON 6, AND STOP THERE ---
-    if (!token.isOnBoard && lastDice == 6)
-    {
-        // place on start and DO NOT move further
-        var bm = token.owner != null ? token.owner.boardManager : null;
-        if (bm == null)
+        if (lastDice <= 0)
         {
-            Debug.LogError("[GM] BoardManager missing on token.owner.");
+            Debug.Log("[GM] Roll the dice first, then select a token.");
             return;
         }
 
-        // put token on the first tile of its path (start)
-        token.transform.position = bm.GetTilePosition(token.color, 0);
-        token.isOnBoard = true;
-        token.currentTileIndex = 0;
+        // --- ENTER ONLY ON 6, AND STOP THERE ---
+        if (!token.isOnBoard && lastDice == 6)
+        {
+            // place on start and DO NOT move further
+            var bm = token.owner != null ? token.owner.boardManager : null;
+            if (bm == null)
+            {
+                Debug.LogError("[GM] BoardManager missing on token.owner.");
+                return;
+            }
 
-        // keep extra turn for rolling 6
-        Debug.Log($"[GM] {CurrentPlayer.playerName} entered the board (6). Extra turn.");
-        // reset dice so the same player can roll again
-        lastDice = 0;
-        // نوبت را عوض نمی‌کنیم؛ همین‌جا برمی‌گردیم
-        return;
+            // put token on the first tile of its path (start)
+            token.transform.position = bm.GetTilePosition(token.color, 0);
+            token.isOnBoard = true;
+            token.currentTileIndex = 0;
+            PlayTokenSound();
+
+
+
+            // keep extra turn for rolling 6
+            Debug.Log($"[GM] {CurrentPlayer.playerName} entered the board (6). Extra turn.");
+            // reset dice so the same player can roll again
+            lastDice = 0;
+            // نوبت را عوض نمی‌کنیم؛ همین‌جا برمی‌گردیم
+            return;
+        }
+
+        // If token is still off-board and dice wasn't 6 → ignore
+        if (!token.isOnBoard && lastDice != 6)
+        {
+            Debug.Log("[GM] Need a 6 to enter the board.");
+            return;
+        }
+
+        // --- NORMAL MOVE ON BOARD ---
+        int stepsToMove = lastDice; // no entry-consumption anymore
+        bool accepted = CurrentPlayer.MoveToken(token, stepsToMove);
+        if (!accepted)
+        {
+            Debug.LogWarning("[GM] Move rejected (token busy or invalid).");
+            return;
+        }
+
+        // after movement, advance turn or keep (if 6)
+        StartCoroutine(WaitAndAdvanceTurn());
     }
-
-    // If token is still off-board and dice wasn't 6 → ignore
-    if (!token.isOnBoard && lastDice != 6)
-    {
-        Debug.Log("[GM] Need a 6 to enter the board.");
-        return;
-    }
-
-    // --- NORMAL MOVE ON BOARD ---
-    int stepsToMove = lastDice; // no entry-consumption anymore
-    bool accepted = CurrentPlayer.MoveToken(token, stepsToMove);
-    if (!accepted)
-    {
-        Debug.LogWarning("[GM] Move rejected (token busy or invalid).");
-        return;
-    }
-
-    // after movement, advance turn or keep (if 6)
-    StartCoroutine(WaitAndAdvanceTurn());
-}
 
 
     private IEnumerator WaitAndAdvanceTurn()
@@ -166,45 +170,53 @@ public class GameManager : MonoBehaviour
     }
 
     private bool HasLegalMove(PlayerController p, int diceVal)
-{
-    if (p == null) return false;
-    var tokens = p.GetTokens();
-    if (tokens == null || tokens.Count == 0) return false;
-
-    bool anyOnBoard = false;
-
-    foreach (var t in tokens)
     {
-        if (t == null) continue;
-        if (t.isMoving) continue;
+        if (p == null) return false;
+        var tokens = p.GetTokens();
+        if (tokens == null || tokens.Count == 0) return false;
 
-        if (t.isOnBoard)
+        bool anyOnBoard = false;
+
+        foreach (var t in tokens)
         {
-            anyOnBoard = true;
+            if (t == null) continue;
+            if (t.isMoving) continue;
 
-            // می‌تونی این‌جا سخت‌گیرتر هم باشی (مثلاً چکِ جا داشتن در مسیر)
-            // فعلاً ساده: اگر روی برد است و در حال حرکت نیست، حرکت قانونی دارد
-            return true;
+            if (t.isOnBoard)
+            {
+                anyOnBoard = true;
+
+                // می‌تونی این‌جا سخت‌گیرتر هم باشی (مثلاً چکِ جا داشتن در مسیر)
+                // فعلاً ساده: اگر روی برد است و در حال حرکت نیست، حرکت قانونی دارد
+                return true;
+            }
         }
+
+        if (!anyOnBoard)
+            return diceVal == 6;
+
+        return false;
     }
 
-    if (!anyOnBoard)
-        return diceVal == 6;
+    // اگر حرکت قانونی نبود، نوبت را بده نفر بعدی (۶ هم نیامده)
+    private IEnumerator PassTurnImmediately()
+    {
+        yield return null;
 
-    return false;
-}
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
 
-// اگر حرکت قانونی نبود، نوبت را بده نفر بعدی (۶ هم نیامده)
-private IEnumerator PassTurnImmediately()
-{
-    yield return null;
+        lastDice = 0;
+        rolledSix = false;
+        pendingSelected = null;
 
-    currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        SetCurrentPlayer(currentPlayerIndex);
+    }
 
-    lastDice = 0;
-    rolledSix = false;
-    pendingSelected = null;
+    public void PlayTokenSound()
+    {
 
-    SetCurrentPlayer(currentPlayerIndex);
-}
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.TokenSound);
+
+
+    }
 }

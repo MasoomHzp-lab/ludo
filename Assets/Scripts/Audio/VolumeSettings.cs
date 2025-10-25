@@ -21,7 +21,7 @@ public class VolumeSettings : MonoBehaviour
         }
         else
         {
-                    SetMusicVolume(); 
+            SetMusicVolume(); 
         }
 
 

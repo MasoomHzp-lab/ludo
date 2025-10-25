@@ -18,4 +18,10 @@ public class MainMenuButtons : MonoBehaviour
 
     }
 
+    public void PlaySoundButton()
+    {
+
+        AudioManager.Instance.PlayButtonSound();
+    }
+
 }
