@@ -44,7 +44,7 @@ public class Dice : MonoBehaviour
         float t = 0f;
         int idx = 0;
 
-        PlayDiceSound();
+        // PlayDiceSound();
         while (t < rollDuration)
         {
             idx = UnityEngine.Random.Range(0, diceSides.Length);

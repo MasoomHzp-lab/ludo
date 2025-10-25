@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             token.transform.position = bm.GetTilePosition(token.color, 0);
             token.isOnBoard = true;
             token.currentTileIndex = 0;
-            PlayTokenSound();
+            // PlayTokenSound();
 
 
 
