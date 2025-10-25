@@ -14,7 +14,9 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip background;
     public AudioClip Button;
-     public AudioClip DiceSound;
+    public AudioClip DiceSound;
+    public AudioClip TokenSound;
+      
 
     private void Start()
     {

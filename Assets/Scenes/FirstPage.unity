@@ -171,6 +171,7 @@ MonoBehaviour:
   background: {fileID: 8300000, guid: 7250bbfe6d9ec6c1c8c7595fe952c5b6, type: 3}
   Button: {fileID: 8300000, guid: 71525bad24a234e06b185f026f128d50, type: 3}
   DiceSound: {fileID: 8300000, guid: 0fbf2bc290e9f5cf59433ea050c828b4, type: 3}
+  TokenSound: {fileID: 8300000, guid: 8951445a4c4458ee08c10ae8ade24e20, type: 3}
 --- !u!114 &14345052
 MonoBehaviour:
   m_ObjectHideFlags: 0
