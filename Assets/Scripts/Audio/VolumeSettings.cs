@@ -1,69 +1,113 @@
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class VolumeSettings : MonoBehaviour
 {
     [SerializeField] private AudioMixer myMixer;
-    [SerializeField] private Slider MusicSlider;
-    [SerializeField] private Slider SFXSlider;
+
+    private List<Slider> musicSliders = new List<Slider>();
+    private List<Slider> sfxSliders = new List<Slider>();
+
+
+    private float currentMusicVolume = 1f;
+    private float currentSFXVolume = 1f;
+
+    
+    public static VolumeSettings Instance;
+
+    private void Awake()
+    {
+
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
 
 
     void Start()
     {
 
-        if (PlayerPrefs.HasKey("MusicVolume"))
-        {
-
-            LoadVolume();
-
-        }
-        else
-        {
-            SetMusicVolume(); 
-        }
+        currentMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        currentSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        ApplyVolumes();
 
 
     }
-    public void SetMusicVolume()
+
+
+    private void ApplyVolumes()
     {
-
-        float volume = MusicSlider.value;
-        float mixerVolum = Mathf.Log10(volume) * 20;
-        myMixer.SetFloat("Music", mixerVolum);
-
+        myMixer.SetFloat("Music", Mathf.Log10(currentMusicVolume) * 20);
+        myMixer.SetFloat("SFX", Mathf.Log10(currentSFXVolume) * 20);
     }
 
-    public void SetSFXVolume()
+
+    public void RegisterSliders(Slider musicSlider, Slider sfxSlider)
     {
+        if (musicSlider != null)
+        {
+            musicSliders.Add(musicSlider);
+            musicSlider.value = currentMusicVolume;
+            musicSlider.onValueChanged.AddListener(delegate { UpdateMusicVolume(musicSlider.value); });
+        }
 
-        float volume = SFXSlider.value;
-        float mixerVolum = Mathf.Log10(volume) * 20;
-        myMixer.SetFloat("SFX", mixerVolum);
-      
-
+        if (sfxSlider != null)
+        {
+            sfxSliders.Add(sfxSlider);
+            sfxSlider.value = currentSFXVolume;
+            sfxSlider.onValueChanged.AddListener(delegate { UpdateSFXVolume(sfxSlider.value); });
+        }
     }
+
+
+     private void UpdateMusicVolume(float value)
+    {
+        currentMusicVolume = value;
+        myMixer.SetFloat("Music", Mathf.Log10(value) * 20);
+        SyncAllMusicSliders();
+    }
+
+    private void UpdateSFXVolume(float value)
+    {
+        currentSFXVolume = value;
+        myMixer.SetFloat("SFX", Mathf.Log10(value) * 20);
+        SyncAllSFXSliders();
+    }
+
+    private void SyncAllMusicSliders()
+    {
+        foreach (var s in musicSliders)
+            if (s != null && s.value != currentMusicVolume)
+                s.value = currentMusicVolume;
+    }
+
+    private void SyncAllSFXSliders()
+    {
+        foreach (var s in sfxSliders)
+            if (s != null && s.value != currentSFXVolume)
+                s.value = currentSFXVolume;
+    }
+
+
+
+
+
 
     public void AcceptSettingButton()
-    {
-        float SFXVolume = SFXSlider.value;
-        PlayerPrefs.SetFloat("SFXVolume", SFXVolume);
-        float MusicVolume = MusicSlider.value;
-        PlayerPrefs.SetFloat("MusicVolume", MusicVolume);
+    {PlayerPrefs.SetFloat("MusicVolume", currentMusicVolume);
+        PlayerPrefs.SetFloat("SFXVolume", currentSFXVolume);
+        PlayerPrefs.Save();
 
     }
     
-    private void LoadVolume()
-    {
-
-        MusicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
-        SetMusicVolume();
-
-
-         SFXSlider.value = PlayerPrefs.GetFloat("SFXVolume");
-        SetSFXVolume();
-    }
-
     
 }
