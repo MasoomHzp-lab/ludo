@@ -236,8 +236,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1278961246}
-        m_TargetAssemblyTypeName: MainMenuButtons, Assembly-CSharp
+      - m_Target: {fileID: 296119358}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
         m_MethodName: ClosePanel
         m_Mode: 1
         m_Arguments:
@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02687d41f18c8f0a1a45bea9f866e7d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Panel: {fileID: 1648966916}
 --- !u!1 &329716341
 GameObject:
   m_ObjectHideFlags: 0
@@ -3247,7 +3248,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1278961245}
-  - component: {fileID: 1278961246}
   - component: {fileID: 1278961247}
   m_Layer: 5
   m_Name: HintButton
@@ -3276,19 +3276,6 @@ RectTransform:
   m_AnchoredPosition: {x: 168.5, y: 0}
   m_SizeDelta: {x: 337, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1278961246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1278961244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebd7484b11392a1708924d74f0db27ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Panel: {fileID: 1648966916}
 --- !u!114 &1278961247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3345,8 +3332,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1278961246}
-        m_TargetAssemblyTypeName: MainMenuButtons, Assembly-CSharp
+      - m_Target: {fileID: 296119358}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
         m_MethodName: OpenPannel
         m_Mode: 2
         m_Arguments:
@@ -3717,8 +3704,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1278961246}
-        m_TargetAssemblyTypeName: MainMenuButtons, Assembly-CSharp
+      - m_Target: {fileID: 296119358}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
         m_MethodName: ClosePanel
         m_Mode: 1
         m_Arguments:
@@ -5416,13 +5403,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2082157438}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 296119358}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
+        m_MethodName: PlaySoundButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
