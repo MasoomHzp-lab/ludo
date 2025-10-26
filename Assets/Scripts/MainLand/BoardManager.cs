@@ -3,6 +3,16 @@ using UnityEngine;
 
 public class BoardManager : MonoBehaviour
 {
+    // === Singleton ===
+    public static BoardManager I;
+    private void Awake()
+    {
+        I = this;
+        // If you want this to persist across scene loads, uncomment:
+        // DontDestroyOnLoad(gameObject);
+    }
+    // ================
+
     [Header("Common Path (shared loop of 52 tiles)")]
     public List<Transform> commonPath = new();
 

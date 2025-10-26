@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
         if (token == null || token.isMoving) return false;
         if (!tokens.Contains(token)) return false; // فقط مهره‌های خودش
         token.MoveSteps(steps);
-        PlayTokenSound();
+        // PlayTokenSound();
         return true;
         
     }

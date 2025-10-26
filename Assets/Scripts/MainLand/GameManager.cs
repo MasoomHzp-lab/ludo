@@ -4,6 +4,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+
+    // === Singleton ===
+    public static GameManager I;
+    private void Awake()
+    {
+        I = this;  // register singleton
+        // If you want this to persist across scene loads, uncomment:
+        // DontDestroyOnLoad(gameObject);
+
+        if (dice == null)
+            Debug.LogError("[GameManager] Dice is not assigned.");
+
+        // link every PlayerController back to this GameManager
+        foreach (var p in players)
+            if (p != null && p.gameManager != this)
+                p.gameManager = this;
+    }
+    // ==================
+
     [Header("Players (order of turns)")]
     public List<PlayerController> players = new List<PlayerController>();
 
@@ -24,17 +43,6 @@ public class GameManager : MonoBehaviour
     public bool consumeOneStepOnEntry = true; // after entering with 6, remaining steps = 5
 
     private Token pendingSelected = null;
-
-    private void Awake()
-    {
-        if (dice == null)
-            Debug.LogError("[GameManager] Dice is not assigned.");
-
-        // link every PlayerController back to this GameManager
-        foreach (var p in players)
-            if (p != null && p.gameManager != this)
-                p.gameManager = this;
-    }
 
     private void OnEnable()
     {
@@ -109,7 +117,7 @@ public class GameManager : MonoBehaviour
             token.transform.position = bm.GetTilePosition(token.color, 0);
             token.isOnBoard = true;
             token.currentTileIndex = 0;
-            PlayTokenSound();
+            // PlayTokenSound();
 
 
 
