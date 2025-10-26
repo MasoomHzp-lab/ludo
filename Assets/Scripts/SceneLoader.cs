@@ -14,7 +14,7 @@ public class SceneLoader : MonoBehaviour
 
 
     [Header("Options")]
-    public bool autoLoadLayout = true;  // اگه تیک‌خورده باشه، خودش Layout رو لود می‌کنه
+    public bool autoLoadMainLand = true;  // اگه تیک‌خورده باشه، خودش Layout رو لود می‌کنه
     public bool autoLoadUI     = false; // اگه خواستی همزمان UI رو هم Additive لود کنه
 
     private IEnumerator Start()
@@ -27,7 +27,7 @@ public class SceneLoader : MonoBehaviour
         }
 
         // لود Layout
-        if (autoLoadLayout && !SceneManager.GetSceneByName(MainLand).isLoaded)
+        if (autoLoadMainLand && !SceneManager.GetSceneByName(MainLand).isLoaded)
         {
             var op = SceneManager.LoadSceneAsync(MainLand, LoadSceneMode.Additive);
             while (!op.isDone) yield return null;

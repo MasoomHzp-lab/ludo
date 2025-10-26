@@ -2399,10 +2399,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9083ddd5975fa344ea8695c5cef76e5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  managersScene: Managers
-  layoutScene: Layout
-  uiScene: GameUI
-  fxScene: FX
+  FirstPage: FirstPage
+  FriendlyGame: FriendlyGame
+  MainLand: MainLand
+  MainLandWithAi: MainLandWithAi
+  OFFlineGame: OFFlineGame
+  OnlinePage: OnlinePage
   autoLoadLayout: 1
   autoLoadUI: 0
 --- !u!4 &1156496559
