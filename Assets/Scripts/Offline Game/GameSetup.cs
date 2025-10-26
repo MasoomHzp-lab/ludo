@@ -40,4 +40,18 @@ public class GameSetup : MonoBehaviour
         return list;
     }
 
+    public void SetSelectedColors(List<PlayerColor> colors)
+{
+    selectedColors = (colors != null && colors.Count > 0)
+        ? new List<PlayerColor>(colors)
+        : BuildDefaultColors();
+}
+
+public List<PlayerColor> EnsureColors()
+{
+    if (selectedColors == null || selectedColors.Count == 0)
+        selectedColors = BuildDefaultColors();
+    return selectedColors;
+}
+
 }
