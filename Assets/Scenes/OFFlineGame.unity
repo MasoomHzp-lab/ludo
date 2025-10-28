@@ -1668,7 +1668,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &826607110
 GameObject:
   m_ObjectHideFlags: 0
@@ -3024,7 +3024,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 348598a8a45035e45ad8a5d2e151b7b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainSceneName: MainLand
+  playersSceneName: MainLand
+  botsSceneName: MainLandWithAi
   chosenPlayers: 4
   chosenMode: 0
 --- !u!1 &1430276218
@@ -3253,7 +3254,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &1467276802
 GameObject:
   m_ObjectHideFlags: 0

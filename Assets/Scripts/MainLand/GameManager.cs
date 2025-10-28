@@ -1,47 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 
-    // === Singleton ===
+      // ===== Singleton (اختیاری) =====
     public static GameManager I;
     private void Awake()
     {
-        I = this;  // register singleton
-        // If you want this to persist across scene loads, uncomment:
-        // DontDestroyOnLoad(gameObject);
+        I = this;
 
         if (dice == null)
             Debug.LogError("[GameManager] Dice is not assigned.");
 
-        // link every PlayerController back to this GameManager
+        // back-reference برای هر PlayerController
         foreach (var p in players)
             if (p != null && p.gameManager != this)
                 p.gameManager = this;
     }
-    // ==================
+    // ===============================
 
     [Header("Players (order of turns)")]
     public List<PlayerController> players = new List<PlayerController>();
 
     [Header("Dice")]
-    public Dice dice; // must expose OnDiceRolled(int)
+    public Dice dice; // باید OnDiceRolled(int) داشته باشد
 
-
+    // بازیکن فعلی
     public PlayerController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
 
-    // turn/dice state
+    // وضعیت نوبت/تاس
     private int currentPlayerIndex = 0;
     private int lastDice = 0;
     private bool rolledSix = false;
 
-    // rules
+    // قوانین پایه لودو
     [Header("Ludo Rules")]
-    public bool enterOnlyOnSix = true;        // must roll 6 to enter from home
-    public bool consumeOneStepOnEntry = true; // after entering with 6, remaining steps = 5
+    [Tooltip("ورود به زمین فقط با ۶")]
+    public bool enterOnlyOnSix = true;
 
+    [Tooltip("اگر ۶ بیاید نوبت اضافه بماند")]
+    public bool extraTurnOnSix = true;
+
+    // کنترل انتخاب توکن
     private Token pendingSelected = null;
 
     private void OnEnable()
@@ -58,7 +61,38 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        ApplyPlayerCountFromSettings();   // ← تعداد نفرات را از MatchSettings می‌گیرد و اعمال می‌کند
         SetCurrentPlayer(0);
+    }
+
+    /// <summary>
+    /// تعداد بازیکن‌ها را از MatchSettings گرفته و لیست players را کوتاه/فعال می‌کند.
+    /// </summary>
+    private void ApplyPlayerCountFromSettings()
+    {
+        // فقط بازیکن‌های معتبر
+        players = players.Where(p => p != null && p.gameObject != null).ToList();
+
+        int desired = players.Count;
+        if (MatchSettings.Instance != null)
+            desired = Mathf.Clamp(MatchSettings.Instance.playerCount, 2, 4);
+
+        // فعال/غیرفعال کردن بر اساس desired
+        for (int i = 0; i < players.Count; i++)
+        {
+            bool active = (i < desired) && players[i] != null;
+            if (players[i] != null)
+                players[i].gameObject.SetActive(active);
+        }
+
+        // لیست را کوتاه کن تا players.Count دقیق شود
+        if (players.Count > desired)
+            players = players.GetRange(0, desired);
+
+        // back-reference دوباره
+        foreach (var p in players)
+            if (p != null && p.gameManager != this)
+                p.gameManager = this;
     }
 
     private void SetCurrentPlayer(int index)
@@ -69,9 +103,16 @@ public class GameManager : MonoBehaviour
         pendingSelected = null;
 
         if (CurrentPlayer != null)
+        {
+            // اگر dice به بازیکن فعلی نیاز دارد:
+            if (dice != null) dice.currentPlayer = CurrentPlayer;
             Debug.Log($"[Turn] {CurrentPlayer.playerName}");
+        }
     }
 
+    /// <summary>
+    /// هوک رول از طرف Dice
+    /// </summary>
     private void HandleDiceRolled(int steps)
     {
         if (CurrentPlayer == null) return;
@@ -86,10 +127,13 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[{CurrentPlayer.playerName}] rolled: {steps}. Click one of {CurrentPlayer.playerName}'s tokens.");
+        Debug.Log($"[{CurrentPlayer.playerName}] rolled: {steps}. Select a token.");
+        // حالا منتظر OnTokenSelected از طرف کلیک بازیکن می‌مانیم
     }
 
-    // Called by Token.OnMouseDown()
+    /// <summary>
+    /// از Token.OnMouseDown یا UI کال می‌شود.
+    /// </summary>
     public void OnTokenSelected(Token token)
     {
         if (token == null) return;
@@ -102,129 +146,128 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // --- ENTER ONLY ON 6, AND STOP THERE ---
-        if (!token.isOnBoard && lastDice == 6)
+        // ورود فقط با ۶ (اگر روی بورد نیست)
+        if (enterOnlyOnSix && !token.isOnBoard && lastDice != 6)
         {
-            // place on start and DO NOT move further
-            var bm = token.owner != null ? token.owner.boardManager : null;
-            if (bm == null)
-            {
-                Debug.LogError("[GM] BoardManager missing on token.owner.");
-                return;
-            }
-
-            // put token on the first tile of its path (start)
-            token.transform.position = bm.GetTilePosition(token.color, 0);
-            token.isOnBoard = true;
-            token.currentTileIndex = 0;
-            // PlayTokenSound();
-
-
-
-            // keep extra turn for rolling 6
-            Debug.Log($"[GM] {CurrentPlayer.playerName} entered the board (6). Extra turn.");
-            // reset dice so the same player can roll again
-            lastDice = 0;
-            // نوبت را عوض نمی‌کنیم؛ همین‌جا برمی‌گردیم
+            Debug.Log("[GM] You must roll a 6 to leave home.");
             return;
         }
 
-        // If token is still off-board and dice wasn't 6 → ignore
-        if (!token.isOnBoard && lastDice != 6)
+        if (!IsLegalMove(CurrentPlayer, token, lastDice))
         {
-            Debug.Log("[GM] Need a 6 to enter the board.");
+            Debug.Log("[GM] Illegal move for this token.");
             return;
         }
 
-        // --- NORMAL MOVE ON BOARD ---
-        int stepsToMove = lastDice; // no entry-consumption anymore
-        bool accepted = CurrentPlayer.MoveToken(token, stepsToMove);
-        if (!accepted)
-        {
-            Debug.LogWarning("[GM] Move rejected (token busy or invalid).");
-            return;
-        }
+        if (pendingSelected != null) return; // هنوز حرکت قبلی تمام نشده
 
-        // after movement, advance turn or keep (if 6)
-        StartCoroutine(WaitAndAdvanceTurn());
+        pendingSelected = token;
+        StartCoroutine(PerformMoveRoutine(token, lastDice));
     }
 
+    private IEnumerator PerformMoveRoutine(Token token, int steps)
+    {
+        // حرکت را به سیستم حرکت توکن بسپار (هوک)
+        yield return StartCoroutine(PerformMove(token, steps));
+
+        // بعد از اتمام حرکت، نوبت را جلو ببریم یا نگه داریم
+        StartCoroutine(WaitAndAdvanceTurn());
+        yield break;
+    }
+
+    /// <summary>
+    /// این هوک را با سیستم حرکت واقعی خودت جایگزین کن.
+    /// الان صرفاً یک شبیه‌سازی ۰.۷s می‌کند (برای اینکه پروژه نپره).
+    /// </summary>
+    private IEnumerator PerformMove(Token token, int steps)
+    {
+        // TODO: اینجا به متد واقعی حرکتت وصل شو، مثلاً:
+        // yield return StartCoroutine(token.MoveSteps(steps));
+        // یا owner: yield return StartCoroutine(token.owner.MoveToken(token, steps));
+        // یا هر متدی که در پروژه‌ات داری.
+
+        // شبیه‌سازی ساده:
+        token.isMoving = true;
+        CurrentPlayer?.PlayTokenSound();
+        yield return new WaitForSeconds(0.7f);
+        token.isMoving = false;
+
+        // اگر روی ۶ ورود از خانه داریم، می‌توانی اینجا منطق ورود واقعی را جایگزین کنی
+    }
 
     private IEnumerator WaitAndAdvanceTurn()
     {
-        // wait until current player's tokens finish moving
+        // صبر تا حرکت تمام شود
         while (CurrentPlayer != null && CurrentPlayer.IsMoving())
             yield return null;
 
-        // Extra turn on 6: keep the same player
-        if (rolledSix)
+        // اگر ۶: نوبت اضافه بماند
+        if (extraTurnOnSix && rolledSix)
         {
             Debug.Log($"[GM] Extra turn for {CurrentPlayer.playerName} (rolled 6).");
-            // reset for the next roll by the same player
             lastDice = 0;
             rolledSix = false;
             pendingSelected = null;
-            yield break; // do NOT advance turn
+            yield break; // نوبت عوض نشود
         }
 
-        // otherwise pass the turn
+        // پاس نوبت
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         SetCurrentPlayer(currentPlayerIndex);
 
-        // reset state
+        // ریست
         lastDice = 0;
         rolledSix = false;
         pendingSelected = null;
     }
 
-    private bool HasLegalMove(PlayerController p, int diceVal)
+    private IEnumerator PassTurnImmediately()
     {
-        if (p == null) return false;
-        var tokens = p.GetTokens();
-        if (tokens == null || tokens.Count == 0) return false;
+        yield return null;
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        SetCurrentPlayer(currentPlayerIndex);
+        lastDice = 0;
+        rolledSix = false;
+        pendingSelected = null;
+    }
 
-        bool anyOnBoard = false;
+    // ====== بررسی‌های قانونی ساده (متناسب با دیتاهای Token/PlayerController پروژه‌ات) ======
+    private bool HasLegalMove(PlayerController player, int steps)
+    {
+        if (player == null) return false;
+        if (player.Tokens == null || player.Tokens.Count == 0) return false;
 
-        foreach (var t in tokens)
+        // اگر ورود فقط با ۶ است و ۶ نیامده، حداقل باید یک توکن روی بورد باشد
+        if (enterOnlyOnSix && steps != 6)
         {
-            if (t == null) continue;
-            if (t.isMoving) continue;
-
-            if (t.isOnBoard)
-            {
-                anyOnBoard = true;
-
-                // می‌تونی این‌جا سخت‌گیرتر هم باشی (مثلاً چکِ جا داشتن در مسیر)
-                // فعلاً ساده: اگر روی برد است و در حال حرکت نیست، حرکت قانونی دارد
-                return true;
-            }
+            bool anyOnBoard = false;
+            foreach (var t in player.Tokens)
+                if (t != null && t.isOnBoard) { anyOnBoard = true; break; }
+            if (!anyOnBoard) return false;
         }
 
-        if (!anyOnBoard)
-            return diceVal == 6;
+        // اگر حتی یک توکن حرکت قانونی داشته باشد، true
+        foreach (var t in player.Tokens)
+            if (t != null && IsLegalMove(player, t, steps))
+                return true;
 
         return false;
     }
 
-    // اگر حرکت قانونی نبود، نوبت را بده نفر بعدی (۶ هم نیامده)
-    private IEnumerator PassTurnImmediately()
+    private bool IsLegalMove(PlayerController player, Token token, int steps)
     {
-        yield return null;
+        if (player == null || token == null) return false;
 
-        currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
+        // اگر هنوز روی بورد نیست:
+        if (!token.isOnBoard)
+            return (enterOnlyOnSix && steps == 6);
 
-        lastDice = 0;
-        rolledSix = false;
-        pendingSelected = null;
+        // اگر روی بورد است، حداقل حرکت ۱ و توکن در حال حرکت نباشد
+        if (steps <= 0) return false;
+        if (token.isMoving) return false;
 
-        SetCurrentPlayer(currentPlayerIndex);
-    }
-
-    public void PlayTokenSound()
-    {
-
-        AudioManager.Instance.PlaySFX(AudioManager.Instance.TokenSound);
-
-
+        // اگر می‌خواهی قوانین دقیق‌تر (ورود به خانه، رد نشدن از پایان مسیر، بلاک‌ها و…) را اعمال کنی
+        // می‌توانی اینجا از BoardManager مسیر را چک کنی. فعلاً ساده نگه می‌داریم.
+        return true;
     }
 }
