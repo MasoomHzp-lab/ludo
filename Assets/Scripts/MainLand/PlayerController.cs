@@ -23,7 +23,9 @@ public class PlayerController : MonoBehaviour
     [Header("Spawn Points (exactly 4)")]
     public List<Transform> spawnPoints = new List<Transform>();
 
-    private readonly List<Token> tokens = new List<Token>();
+    [SerializeField] private List<Token> tokens = new List<Token>(); 
+    public IReadOnlyList<Token> Tokens => tokens;
+
 
     private void Start()
     {
