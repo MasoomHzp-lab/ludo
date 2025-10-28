@@ -307,7 +307,19 @@ MonoBehaviour:
   m_Group: {fileID: 1442527958}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: Choose2Players
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &120807800
 GameObject:
@@ -1643,7 +1655,19 @@ MonoBehaviour:
   m_Group: {fileID: 739812758}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: ChoosePlayers
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &826607110
 GameObject:
@@ -1819,7 +1843,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 847913945}
   m_CullTransparentMesh: 1
---- !u!1 &868414675
+--- !u!1 &940984858
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1827,108 +1851,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 868414677}
-  - component: {fileID: 868414678}
+  - component: {fileID: 940984860}
+  - component: {fileID: 940984859}
   m_Layer: 0
-  m_Name: Bootstrap
+  m_Name: MatchSetting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &868414677
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868414675}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39279592, y: -0.40527984, z: 0.07919555}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &868414678
+--- !u!114 &940984859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868414675}
+  m_GameObject: {fileID: 940984858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0a2aa997b94cd43b64443cc9b0711d, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b21f05827ef925418d7ad63a2cd5b66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
-  boardManager: {fileID: 0}
-  tokenArchetypes:
-  - color: 0
-    tokenPrefab: {fileID: 5994649514861874428, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
-    spawnRoot: {fileID: 0}
-    spawnPoints: []
-    playerNameOverride: red
-  - color: 0
-    tokenPrefab: {fileID: 0}
-    spawnRoot: {fileID: 0}
-    spawnPoints: []
-    playerNameOverride: 
-  - color: 0
-    tokenPrefab: {fileID: 0}
-    spawnRoot: {fileID: 0}
-    spawnPoints: []
-    playerNameOverride: 
-  - color: 0
-    tokenPrefab: {fileID: 0}
-    spawnRoot: {fileID: 0}
-    spawnPoints: []
-    playerNameOverride: 
-  defaultColors: 00000000010000000200000003000000
---- !u!1 &868551918
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 868551920}
-  - component: {fileID: 868551919}
-  m_Layer: 0
-  m_Name: AppSetup
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &868551919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868551918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f043f621b9a67124696599e87f0dd223, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numPlayers: 4
-  playersType: 0
-  selectedColors: 00000000010000000300000002000000
---- !u!4 &868551920
+  playerCount: 4
+  opponentMode: 0
+--- !u!4 &940984860
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868551918}
+  m_GameObject: {fileID: 940984858}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39279592, y: -0.40527984, z: 0.07919555}
+  m_LocalPosition: {x: 175.5, y: 312.00006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2370,58 +2325,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108156862}
   m_CullTransparentMesh: 1
---- !u!1 &1156496557
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1156496559}
-  - component: {fileID: 1156496558}
-  m_Layer: 0
-  m_Name: SceneLoader
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1156496558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156496557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9083ddd5975fa344ea8695c5cef76e5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FirstPage: FirstPage
-  FriendlyGame: FriendlyGame
-  MainLand: MainLand
-  MainLandWithAi: MainLandWithAi
-  OFFlineGame: OFFlineGame
-  OnlinePage: OnlinePage
-  autoLoadLayout: 1
-  autoLoadUI: 0
---- !u!4 &1156496559
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1156496557}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39279592, y: -0.40527984, z: 0.07919555}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1166661792
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,7 +2457,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2908592236624182801, guid: 2a074b3b141f32f4e8abeb83cb9e231f, type: 3}
+  m_Sprite: {fileID: 7979084308911338257, guid: 956172fd5ed91e0aabea1b5ab639de3b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2807,7 +2710,19 @@ MonoBehaviour:
   m_Group: {fileID: 1442527958}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: Choose3Players
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1278782134
 GameObject:
@@ -3106,21 +3021,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1422919794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0140cc25f1877c247931c7726b4f0c4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 348598a8a45035e45ad8a5d2e151b7b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btn2P: {fileID: 0}
-  btn3P: {fileID: 0}
-  btn4P: {fileID: 0}
-  btnBots: {fileID: 0}
-  btnPlayers: {fileID: 0}
-  btnStart: {fileID: 0}
-  selector2P: {fileID: 0}
-  selector3P: {fileID: 0}
-  selector4P: {fileID: 0}
-  selectorBots: {fileID: 0}
-  selectorPlayers: {fileID: 0}
-  boardSceneName: MainBoard
+  mainSceneName: MainLand
+  chosenPlayers: 4
+  chosenMode: 0
 --- !u!1 &1430276218
 GameObject:
   m_ObjectHideFlags: 0
@@ -3334,7 +3240,19 @@ MonoBehaviour:
   m_Group: {fileID: 739812758}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: ChooseBots
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1467276802
 GameObject:
@@ -3421,6 +3339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1518011632}
+  - component: {fileID: 1518011633}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -3448,6 +3367,62 @@ RectTransform:
   m_AnchoredPosition: {x: 0.00003409786, y: 222.6591}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1518011633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1518011631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 0}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: StartMatch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1534554500
 GameObject:
   m_ObjectHideFlags: 0
@@ -3779,7 +3754,19 @@ MonoBehaviour:
   m_Group: {fileID: 1442527958}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422919796}
+        m_TargetAssemblyTypeName: OfflinePageController, Assembly-CSharp
+        m_MethodName: Choose4Players
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &1706981005
 GameObject:
@@ -4174,6 +4161,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 237930582}
   - {fileID: 54915970}
-  - {fileID: 868551920}
-  - {fileID: 868414677}
-  - {fileID: 1156496559}
+  - {fileID: 940984860}
