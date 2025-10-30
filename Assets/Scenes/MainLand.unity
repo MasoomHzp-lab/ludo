@@ -1805,6 +1805,11 @@ MonoBehaviour:
   - {fileID: 1886070237}
   - {fileID: 1528053455}
   - {fileID: 409564991}
+  tokens:
+  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
+  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
+  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
+  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
 --- !u!4 &339502422
 Transform:
   m_ObjectHideFlags: 0
@@ -4445,7 +4450,7 @@ MonoBehaviour:
   - {fileID: 1467508721}
   dice: {fileID: 619436029}
   enterOnlyOnSix: 1
-  consumeOneStepOnEntry: 1
+  extraTurnOnSix: 1
 --- !u!1 &867691269
 GameObject:
   m_ObjectHideFlags: 0
@@ -7163,6 +7168,11 @@ MonoBehaviour:
   - {fileID: 300154521}
   - {fileID: 1814014331}
   - {fileID: 766913813}
+  tokens:
+  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
+  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
+  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
+  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
 --- !u!4 &1467508722
 Transform:
   m_ObjectHideFlags: 0
@@ -8450,6 +8460,11 @@ MonoBehaviour:
   - {fileID: 1037572907}
   - {fileID: 1785033122}
   - {fileID: 647188343}
+  tokens:
+  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
+  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
+  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
+  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
 --- !u!4 &1744505141
 Transform:
   m_ObjectHideFlags: 0
@@ -8763,6 +8778,11 @@ MonoBehaviour:
   - {fileID: 316292234}
   - {fileID: 482543288}
   - {fileID: 226900485}
+  tokens:
+  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
+  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
+  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
+  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
 --- !u!4 &1835499168
 Transform:
   m_ObjectHideFlags: 0

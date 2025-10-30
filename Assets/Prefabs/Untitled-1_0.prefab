@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: 9182157284707403512, guid: e72f9dbb7142679439ac9b5019a1634e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -104,7 +104,8 @@ MonoBehaviour:
   color: 0
   currentTileIndex: -1
   isMoving: 0
-  isAtHome: 1
+  isOnBoard: 0
+  owner: {fileID: 0}
 --- !u!58 &-7446237179277951982
 CircleCollider2D:
   m_ObjectHideFlags: 0
