@@ -2132,6 +2132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Red Player
   color: 0
+  playerColor: {r: 0.4627451, g: 0, b: 0.003921569, a: 0}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 5994649514861874428, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
@@ -8482,6 +8483,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Green Player
   color: 2
+  playerColor: {r: 0.05490196, g: 0.40392157, b: 0, a: 0}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 5472898143758978222, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
@@ -9805,6 +9807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Yellow Player
   color: 3
+  playerColor: {r: 0.69803923, g: 0.54509807, b: 0, a: 0}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 2796457890192800307, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
@@ -10017,7 +10020,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 744803639}
   m_HandleRect: {fileID: 744803638}
   m_Direction: 2
-  m_Value: 0.9999998
+  m_Value: 1.0000002
   m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -10245,6 +10248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Blue Player
   color: 1
+  playerColor: {r: 0, g: 0.36862746, b: 0.5647059, a: 0}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 7345707790143926242, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
