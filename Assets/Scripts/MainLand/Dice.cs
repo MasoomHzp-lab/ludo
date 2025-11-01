@@ -30,7 +30,13 @@ public class Dice : MonoBehaviour
         // audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
         
     }
+    public void Roll()
+    {
+        if (isRolling) return;
+        if (GameManager.I != null && !GameManager.I.CanRoll()) return;
 
+        StartCoroutine(RollRoutine());
+    }
     public void RollDice()
     {
         if (!isRolling && diceSides != null && diceSides.Length > 0)
@@ -73,4 +79,5 @@ public class Dice : MonoBehaviour
 
 
     }
+
 }
