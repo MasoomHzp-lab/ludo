@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-     // ===== Singleton (اختیاری) =====
+   // ===== Singleton (اختیاری) =====
     public static GameManager I;
     private void Awake()
     {
@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Dice")]
     public Dice dice; // باید OnDiceRolled(int) داشته باشد
+
+    [Header("Rules")]
+    public RulesManager rules; // ← در Inspector ست کن
 
     // بازیکن فعلی
     public PlayerController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
@@ -65,9 +68,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        ApplyPlayerCountFromSettings();   // ← تعداد نفرات را از MatchSettings می‌گیرد و اعمال می‌کند
+        ApplyPlayerCountFromSettings();
         SetCurrentPlayer(0);
-        canRoll = true;                   // بازیکن شروع‌کننده می‌تواند تاس بیندازد
+        canRoll = true;
+
+        // تعیین اسلات خانۀ اختصاصی مهره‌ها (برای بازگشت صحیح به Home)
+        rules?.EnsureHomeSlotAssignedForAll(players);
     }
 
     /// <summary>
@@ -109,7 +115,6 @@ public class GameManager : MonoBehaviour
 
         if (CurrentPlayer != null)
         {
-            // اگر dice به بازیکن فعلی نیاز دارد:
             if (dice != null) dice.currentPlayer = CurrentPlayer;
             Debug.Log($"[Turn] {CurrentPlayer.playerName}");
         }
@@ -135,8 +140,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // بازیکن جدید می‌تواند تاس بیندازد
-        canRoll = true;
+        canRoll = true; // بازیکن جدید می‌تواند تاس بیندازد
     }
 
     /// <summary>
@@ -144,7 +148,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void HandleDiceRolled(int steps)
     {
-        // اگر به هر دلیلی Dice قبل از چک CanRoll رویداد را فایر کرد، محافظت:
         if (!canRoll)
         {
             Debug.Log("[GM] Dice roll ignored (canRoll=false).");
@@ -209,8 +212,10 @@ public class GameManager : MonoBehaviour
         // حرکت را به سیستم حرکت توکن بسپار (هوک)
         yield return StartCoroutine(PerformMove(token, steps));
 
-        // ✅ بعد از اتمام حرکت، برخورد/کشتن را بررسی کن
-        ResolveCaptures(token);
+        rules?.HandleIfFinished(token);
+
+        // بعد از اتمام حرکت، برخورد/کشتن را بررسی کن (در RulesManager)
+        rules?.ResolveCaptures(this, token);
 
         // بعد از اتمام حرکت، نوبت را جلو ببریم یا نگه داریم
         yield return StartCoroutine(WaitAndAdvanceTurn());
@@ -304,7 +309,8 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    private bool IsLegalMove(PlayerController player, Token token, int steps)
+    // public تا AI بتواند صدا بزند
+    public bool IsLegalMove(PlayerController player, Token token, int steps)
     {
         if (player == null || token == null) return false;
 
@@ -322,120 +328,5 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
-
-    // ====== برخورد/کُشتن ======
-
-    /// هم‌خانه بودن دو مهره (با تلورانس خیلی کم برای خطای ممیز)
-    private bool AreOnSameTile(Token a, Token b)
-    {
-        if (a == null || b == null) return false;
-        if (!a.isOnBoard || !b.isOnBoard) return false;
-        return (a.owner != null && b.owner != null) &&
-               (Vector3.SqrMagnitude(a.transform.position - b.transform.position) < 0.0001f);
-    }
-
-   private bool IsSafeTile(Token t)
-{
-    if (t == null || t.owner == null) return false;
-
-    // قانون عمومی: خانه‌ی شروع هر رنگ امن است
-    if (t.isOnBoard && t.currentTileIndex == 0) 
-        return true;
-
-    // اگر BoardManager متدهایی برای مسیر منزل/خانه‌های امن دارد، این‌ها را باز کن
-    try
-    {
-        var bm = (t.owner != null) ? t.owner.boardManager : null;
-        if (bm != null)
-        {
-            // نمونه‌های احتمالی—فقط اگر در پروژه‌ات وجود دارند، از حالت کامنت خارج کن:
-            // if (bm.IsSafeTile(t.owner.color, t.currentTileIndex)) return true;
-            // if (bm.IsInHomePath(t.owner.color, t.currentTileIndex)) return true;
-            // اگر رنج مسیر منزل می‌ده: if (bm.IsHomeRange(t.owner.color, t.currentTileIndex)) return true;
-        }
-    }
-    catch { /* نادیده بگیر */ }
-
-    // وابستگی به GetTileObject/SafeTile یا نام‌گذاری حذف شد تا ارورها رفع شوند
-    return false;
-}
-
-
-    /// اگر Token تازه‌حرکت‌کرده روی مهره‌ی حریف در خانه‌ی غیرایمن فرود بیاید، حریف را به خانه برگردان.
-    private void ResolveCaptures(Token mover)
-    {
-        if (mover == null || !mover.isOnBoard) return;
-
-        // خانه‌ی امن؟ هیچ برخوردی رخ نمی‌دهد
-        if (IsSafeTile(mover)) return;
-
-        foreach (var p in players)
-        {
-            if (p == null || p.Tokens == null) continue;
-            foreach (var other in p.Tokens)
-            {
-                if (other == null || other == mover) continue;
-                if (!other.isOnBoard) continue;
-
-                if (AreOnSameTile(mover, other))
-                {
-                    // هم‌رنگ؟ (اگر قانون استک داری بعداً می‌افزاییم)
-                    if (other.owner == mover.owner) continue;
-
-                    // اگر خانه برای other امن باشد هم نکُش
-                    if (IsSafeTile(other)) continue;
-
-                    // کشتن
-                    SendTokenHome(other);
-                    Debug.Log($"[Capture] {mover.owner.playerName} captured {other.owner.playerName}'s token.");
-                }
-            }
-        }
-    }
-
-    /// برگرداندن مهره به خانه (Home/Spawn)
-    private void SendTokenHome(Token t)
-    {
-        if (t == null || t.owner == null) return;
-
-        t.isOnBoard = false;
-        t.isMoving = false;
-        t.currentTileIndex = -1;
-
-        // پیدا کردن یک اسپات خالی در خانه‌ی صاحب مهره
-        var pc = t.owner;
-        int spawnIdx = GetFreeHomeIndex(pc, t);
-        if (spawnIdx < 0) spawnIdx = 0;
-
-        if (pc != null && pc.spawnPoints != null && pc.spawnPoints.Count > 0)
-        {
-            var sp = pc.spawnPoints[Mathf.Clamp(spawnIdx, 0, pc.spawnPoints.Count - 1)];
-            if (sp != null) t.transform.position = sp.position;
-        }
-    }
-
-    /// یک خانه‌ی خالی در Home پیدا کن
-    private int GetFreeHomeIndex(PlayerController pc, Token ignoreToken = null)
-    {
-        if (pc == null || pc.spawnPoints == null || pc.spawnPoints.Count == 0) return 0;
-
-        for (int i = 0; i < pc.spawnPoints.Count; i++)
-        {
-            var spot = pc.spawnPoints[i];
-            bool occupied = false;
-
-            foreach (var tok in pc.Tokens)
-            {
-                if (tok == null || tok == ignoreToken) continue;
-                if (!tok.isOnBoard && Vector3.SqrMagnitude(tok.transform.position - spot.position) < 0.0001f)
-                {
-                    occupied = true; break;
-                }
-            }
-            if (!occupied) return i;
-        }
-        return -1;
-    }
-
 
 }

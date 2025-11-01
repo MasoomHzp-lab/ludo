@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             var obj = Instantiate(tokenPrefab, spawnPoints[i].position, Quaternion.identity);
-            obj.name = $"{playerName}_Token_{i+1}";
+            obj.name = $"{playerName}_Token_{i + 1}";
 
             var token = obj.GetComponent<Token>();
             if (token == null)
@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
             token.Initialize(boardManager, this, gameManager);
             tokens.Add(token);
         }
+
     }
 
     public List<Token> GetTokens() => tokens;
