@@ -23,6 +23,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FriendlyGame.unity
     guid: 45cce1d7910325d45ad66a36dde50c1b
+  - enabled: 1
+    path: Assets/Scenes/MainLandOnline.unity
+    guid: 34b608be520eda44f98a52b3e6ada53d
+  - enabled: 1
+    path: Assets/Scenes/MainLandOnlinePro.unity
+    guid: b99e93b57a3ce5147aaffdff552f9a89
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -47,12 +47,11 @@ public class Token : MonoBehaviour
         if (!isOnBoard)
         {
             currentTileIndex = 0;
-            Vector3 startPos = boardManager.GetTilePosition(color, currentTileIndex);
-            transform.position = startPos;
+            transform.position = boardManager.GetTilePosition(color, currentTileIndex);
             isOnBoard = true;
+            steps -= 1;
 
-            // اگر قوانینت ایجاب می‌کند که با ورود، یک قدم هم جلو برود:
-            // اگر می‌خواهی ورود هم جزو steps حساب شود، steps -= 1;
+
         }
 
         for (int i = 0; i < steps; i++)
@@ -75,4 +74,17 @@ public class Token : MonoBehaviour
 
         isMoving = false;
     }
+    public void EnterAtStart()
+{
+    // فرض: اندیس 0 خانه شروع است؛ اگر تابع اختصاصی داری همان را صدا بزن
+    currentTileIndex = 0;
+    Vector3 startPos = boardManager.GetTilePosition(owner.color, currentTileIndex);
+    transform.position = startPos;
+
+    isOnBoard = true;
+    isMoving = false;
+
+    // اگر اسنپ انیمیشن می‌خواهی، می‌توانی یک کوروتینِ کوتاه با لِرپ بگذاری
+    // ولی مهم: steps کم نشود و حرکت جلوتر نرود
+}
 }

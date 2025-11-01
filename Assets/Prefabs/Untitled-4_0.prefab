@@ -104,7 +104,8 @@ MonoBehaviour:
   color: 1
   currentTileIndex: -1
   isMoving: 0
-  isAtHome: 1
+  isOnBoard: 0
+  owner: {fileID: 0}
 --- !u!58 &-5868278387183957808
 CircleCollider2D:
   m_ObjectHideFlags: 0
