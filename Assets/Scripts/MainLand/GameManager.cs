@@ -96,19 +96,19 @@ public class GameManager : MonoBehaviour
     }
 
     private void SetCurrentPlayer(int index)
-    {
-        currentPlayerIndex = Mathf.Clamp(index, 0, Mathf.Max(0, players.Count - 1));
-        lastDice = 0;
-        rolledSix = false;
-        pendingSelected = null;
+{
+    currentPlayerIndex = Mathf.Clamp(index, 0, Mathf.Max(0, players.Count - 1));
+    lastDice = 0;
+    rolledSix = false;
+    pendingSelected = null;
 
-        if (CurrentPlayer != null)
-        {
-            // اگر dice به بازیکن فعلی نیاز دارد:
-            if (dice != null) dice.currentPlayer = CurrentPlayer;
-            Debug.Log($"[Turn] {CurrentPlayer.playerName}");
-        }
+    if (CurrentPlayer != null)
+    {
+        if (dice != null)
+            dice.currentPlayer = CurrentPlayer; // ← برای UI/صدا/کنترل دکمه‌ها مفید است
     }
+}
+
 
     /// <summary>
     /// هوک رول از طرف Dice
@@ -179,21 +179,23 @@ public class GameManager : MonoBehaviour
     /// این هوک را با سیستم حرکت واقعی خودت جایگزین کن.
     /// الان صرفاً یک شبیه‌سازی ۰.۷s می‌کند (برای اینکه پروژه نپره).
     /// </summary>
-    private IEnumerator PerformMove(Token token, int steps)
+   private IEnumerator PerformMove(Token token, int steps)
+{
+    if (token == null) yield break;
+
+    // اگر مهره بیرون است و ۶ آمده: فقط وارد خانه شروع شود و تمام
+    if (!token.isOnBoard && steps == 6)
     {
-        // TODO: اینجا به متد واقعی حرکتت وصل شو، مثلاً:
-        // yield return StartCoroutine(token.MoveSteps(steps));
-        // یا owner: yield return StartCoroutine(token.owner.MoveToken(token, steps));
-        // یا هر متدی که در پروژه‌ات داری.
-
-        // شبیه‌سازی ساده:
-        token.isMoving = true;
-        CurrentPlayer?.PlayTokenSound();
-        yield return new WaitForSeconds(0.7f);
-        token.isMoving = false;
-
-        // اگر روی ۶ ورود از خانه داریم، می‌توانی اینجا منطق ورود واقعی را جایگزین کنی
+        token.EnterAtStart();   // ← متد کمکی که پایین تعریف می‌کنیم
+        yield break;            // حرکت دیگری انجام نشود
     }
+
+    // بقیهٔ حرکت‌ها طبق روال
+    CurrentPlayer?.MoveToken(token, steps);
+
+    while (token != null && token.isMoving)
+        yield return null;
+}
 
     private IEnumerator WaitAndAdvanceTurn()
     {
