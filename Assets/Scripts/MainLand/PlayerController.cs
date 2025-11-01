@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
   [Header("Player Info")]
     public string playerName;
     public PlayerColor color;
+    public Color playerColor;
 
     [Header("References")]
     public BoardManager boardManager;
