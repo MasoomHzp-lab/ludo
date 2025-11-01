@@ -1797,6 +1797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Red Player
   color: 0
+  playerColor: {r: 0.46226418, g: 0, b: 0.003625546, a: 0.6666667}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 5994649514861874428, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
@@ -1805,11 +1806,7 @@ MonoBehaviour:
   - {fileID: 1886070237}
   - {fileID: 1528053455}
   - {fileID: 409564991}
-  tokens:
-  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
-  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
-  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
-  - {fileID: 7924976097182173746, guid: 045081ac5a73019409c2aa547ce4842e, type: 3}
+  tokens: []
 --- !u!4 &339502422
 Transform:
   m_ObjectHideFlags: 0
@@ -7160,6 +7157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Green Player
   color: 2
+  playerColor: {r: 0.056546643, g: 0.4056604, b: 0, a: 1}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 5472898143758978222, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
@@ -7168,11 +7166,7 @@ MonoBehaviour:
   - {fileID: 300154521}
   - {fileID: 1814014331}
   - {fileID: 766913813}
-  tokens:
-  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
-  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
-  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
-  - {fileID: 5780106705263746919, guid: c9b2a77d96acfc24894a14a7de9406d0, type: 3}
+  tokens: []
 --- !u!4 &1467508722
 Transform:
   m_ObjectHideFlags: 0
@@ -8452,6 +8446,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Yellow Player
   color: 3
+  playerColor: {r: 0.6981132, g: 0.54480207, b: 0, a: 0.68235296}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 2796457890192800307, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
@@ -8460,11 +8455,7 @@ MonoBehaviour:
   - {fileID: 1037572907}
   - {fileID: 1785033122}
   - {fileID: 647188343}
-  tokens:
-  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
-  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
-  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
-  - {fileID: 3371867354675583216, guid: 3b424b5e694cdfc4db7744a1b8049761, type: 3}
+  tokens: []
 --- !u!4 &1744505141
 Transform:
   m_ObjectHideFlags: 0
@@ -8770,6 +8761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerName: Blue Player
   color: 1
+  playerColor: {r: 0, g: 0.36847955, b: 0.5660378, a: 0.74509805}
   boardManager: {fileID: 541464574}
   gameManager: {fileID: 847207385}
   tokenPrefab: {fileID: 7345707790143926242, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
@@ -8778,11 +8770,7 @@ MonoBehaviour:
   - {fileID: 316292234}
   - {fileID: 482543288}
   - {fileID: 226900485}
-  tokens:
-  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
-  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
-  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
-  - {fileID: -8232824355658531973, guid: b1ea3b53b4811bd4496a1c7ccee62386, type: 3}
+  tokens: []
 --- !u!4 &1835499168
 Transform:
   m_ObjectHideFlags: 0

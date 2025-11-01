@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OutLine
-  m_Shader: {fileID: -6465566751694194690, guid: 7e668b105a0614e44a36c1e95fbffde8, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: bb0e6d60713f75e58afdd79ba940e48b, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -53,7 +53,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Otline_Thicknesss: 4
+    m_Colors:
+    - _OutLineColor: {r: 1, g: 0.8272578, b: 0, a: 1}
+    - _OutlineColor2: {r: 0.5754717, g: 0, b: 0, a: 1}
+    - _OutlineThicknes: {r: 0.02, g: 0, b: 0, a: 0}
+    - _outline_color: {r: 0.2216792, g: 0, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

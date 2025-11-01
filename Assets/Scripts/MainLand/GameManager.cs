@@ -102,12 +102,39 @@ public class GameManager : MonoBehaviour
     rolledSix = false;
     pendingSelected = null;
 
-    if (CurrentPlayer != null)
-    {
-        if (dice != null)
-            dice.currentPlayer = CurrentPlayer; // ← برای UI/صدا/کنترل دکمه‌ها مفید است
+        if (CurrentPlayer != null)
+        {
+            // اگر dice به بازیکن فعلی نیاز دارد:
+            if (dice != null) dice.currentPlayer = CurrentPlayer;
+            Debug.Log($"[Turn] {CurrentPlayer.playerName}");
+        }
+
+
+
+        //// خاموش کردن درخشش همه بازیکن‌ها
+        foreach (var p in players)
+        {
+            if (p == null || p.Tokens == null) continue;
+            foreach (var t in p.Tokens)
+            {
+                var glow = t.GetComponent<OutLineGlow>();
+                if (glow != null) glow.SetGlow(false);
+            }
+        }
+
+        // روشن کردن درخشش بازیکن فعلی
+        if (CurrentPlayer != null && CurrentPlayer.Tokens != null)
+        {
+            foreach (var t in CurrentPlayer.Tokens)
+            {
+                var glow = t.GetComponent<OutLineGlow>();
+                if (glow != null) glow.SetGlow(true);
+            }
+        }
+
+
+
     }
-}
 
 
     /// <summary>
