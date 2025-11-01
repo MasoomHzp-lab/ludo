@@ -1,26 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
 public class AIController : MonoBehaviour
 {
-    [Header("References")]
+  [Header("References")]
     public GameManager gameManager;   // assign in Inspector
-    public Dice dice;                 // assign in Inspector (the same dice used by humans)
-    public BoardManager boardManager; // assign in Inspector
-    public PlayerController self;     // this AI's PlayerController (assign this same object)
+    public Dice dice;                 // assign in Inspector (same dice)
+    public PlayerController self;     // this AI's PlayerController
 
     [Header("Timing")]
     public float rollDelay = 0.6f;    // wait before rolling
     public float selectDelay = 0.6f;  // wait before selecting a token
 
     [Header("Behavior")]
-    public bool preferEnterOnSix = true;  // if dice=6 and token off-board exists → enter
-    public bool preferFarthestAdvance = true; // otherwise pick token that advances the most
+    public bool preferEnterOnSix = true;        // enter when 6 if start is free
+    public bool preferFarthestAdvance = true;   // otherwise choose farthest
 
     // internal
     private bool awaitingMyRollResult = false;
-    private int lastRolledValue = 0;
 
     private void Reset()
     {
@@ -34,65 +32,60 @@ public class AIController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (dice != null)
-            dice.OnDiceRolled += OnDiceRolled;
+        if (dice != null) dice.OnDiceRolled += OnDiceRolled;
     }
 
     private void OnDisable()
     {
-        if (dice != null)
-            dice.OnDiceRolled -= OnDiceRolled;
+        if (dice != null) dice.OnDiceRolled -= OnDiceRolled;
     }
 
     private void Update()
     {
         if (gameManager == null || self == null) return;
 
-        // Only act on our turn
+        // فقط نوبت خودِ AI
         if (gameManager.CurrentPlayer != self) return;
 
-        // If any token is still moving, wait
+        // اگر مهره‌ای در حال حرکت است، صبر کن
         if (self.IsMoving()) return;
 
-        // If we are already awaiting a roll result (i.e., we rolled), do nothing
+        // اگر در انتظار نتیجه‌ی رول قبلی هستیم، صبر
         if (awaitingMyRollResult) return;
 
-        // If GM از قبل تاس رو لاک کرده یا هنوز منتظر انتخاب انسانه، ممکنه Roll مجاز نباشه.
-        // چون نمی‌خوایم فایل GM رو تغییر بدیم، ساده‌ترین راه: فقط وقتی GM آخرین تاس را مصرف/ریست می‌کند،
-        // ما رول می‌کنیم. با یک تاخیر کوچک:
-        StartCoroutine(AIRollAfterDelay());
+        // اگر تاس از دید GM مجاز است، رول کن
+        if (gameManager.CanRoll())
+            StartCoroutine(AIRollAfterDelay());
     }
 
     private IEnumerator AIRollAfterDelay()
     {
-        awaitingMyRollResult = true; // lock to avoid duplicate rolls
+        awaitingMyRollResult = true; // جلوگیری از رول‌های تکراری
         yield return new WaitForSeconds(rollDelay);
 
-        // Try to roll: اگر GM دکمه‌ی UI دارد و با متدی مثل OnDiceButtonPressed قفل می‌کند، بهتر است همان را صدا بزنیم.
-        // اگر چنین متدی نداری، مستقیماً dice.RollDice() را صدا بزن.
-        bool rolled = false;
-
-        // Try to find a public method on GM via reflection (optional safety). Commented out to keep simple.
-        // Otherwise directly roll:
-        if (dice != null)
+        // دوباره چک کن، شاید وسط تاخیر نوبت عوض شده
+        if (gameManager == null || gameManager.CurrentPlayer != self || !gameManager.CanRoll())
         {
-            dice.RollDice();
-            rolled = true;
+            awaitingMyRollResult = false;
+            yield break;
         }
 
-        if (!rolled)
+        if (dice != null)
         {
-            Debug.LogWarning("[AI] Could not roll the dice (no method wired).");
-            awaitingMyRollResult = false; // allow retry
+            dice.Roll(); // مطمئن شو متد صحیح همینه (Roll/RollDice)
+        }
+        else
+        {
+            Debug.LogWarning("[AI] Dice reference is missing.");
+            awaitingMyRollResult = false;
         }
     }
 
     private void OnDiceRolled(int value)
     {
-        // Only react if it's our turn
+        // فقط واکنش در نوبت خودمان
         if (gameManager == null || gameManager.CurrentPlayer != self) return;
 
-        lastRolledValue = value;
         StartCoroutine(AISelectAfterDelay(value));
     }
 
@@ -100,94 +93,128 @@ public class AIController : MonoBehaviour
     {
         yield return new WaitForSeconds(selectDelay);
 
-        var tokens = self.GetTokens();
+        if (gameManager == null || self == null) { awaitingMyRollResult = false; yield break; }
+
+        var tokens = self.Tokens != null ? new List<Token>(self.Tokens) : null;
         if (tokens == null || tokens.Count == 0)
         {
             awaitingMyRollResult = false;
             yield break;
         }
 
+        // از بین حرکت‌های قانونی انتخاب کن
         Token choice = ChooseToken(tokens, value);
-        if (choice == null)
+
+        if (choice != null)
         {
-            // No legal move → GM logic should pass the turn automatically
-            awaitingMyRollResult = false;
-            yield break;
+            gameManager.OnTokenSelected(choice);
+            // تا پایان حرکت/مدیریت نوبت صبر کن
+            StartCoroutine(ReleaseAwaitingWhenDone());
         }
-
-        // Signal selection to GameManager (same as human click)
-        gameManager.OnTokenSelected(choice);
-
-        // We selected; now wait until GM finishes move/turn.
-        // We'll release awaiting flag when Update() sees it's our turn again or not.
-        StartCoroutine(ReleaseAwaitingWhenDone());
+        else
+        {
+            // هیچ حرکت قانونی نداریم → GM خودش پاس می‌ده
+            awaitingMyRollResult = false;
+        }
     }
 
     private IEnumerator ReleaseAwaitingWhenDone()
     {
-        // wait a bit, then free the flag; GM will manage extra turn on six / pass turn
-        while (self.IsMoving())
+        // صبر تا حرکت/نوبت مدیریت شود
+        while (self != null && self.IsMoving())
             yield return null;
 
+        // یه فریم برای هماهنگی با GM
+        yield return null;
         awaitingMyRollResult = false;
     }
 
+    // ===================== انتخاب مهره =====================
+
     private Token ChooseToken(List<Token> tokens, int diceVal)
     {
-        Token best = null;
+        // لیست حرکت‌های قانونی با استناد به GM
+        var movable = tokens
+            .Where(t => t != null && gameManager.IsLegalMove(self, t, diceVal))
+            .ToList();
 
-        // Rule: if dice == 6 and any off-board token exists and we prefer entering, do that.
-        if (preferEnterOnSix && diceVal == 6)
+        if (movable.Count == 0) return null;
+
+        bool hasHomeTokens    = tokens.Any(t => t != null && !t.isOnBoard);
+        bool startOccupiedBySelf = tokens.Any(t => t != null && t.isOnBoard && t.currentTileIndex == 0);
+
+        // ۱) اگر ۶ آمده:
+        if (diceVal == 6)
         {
-            foreach (var t in tokens)
+            if (startOccupiedBySelf)
             {
-                if (t == null) continue;
-                if (!t.isOnBoard && IsLegalMove(t, diceVal))
-                    return t; // enter immediately on first off-board token
-            }
-        }
+                // اگر خانه‌ی شروع اشغال است، مهره‌ی روی Start را اول حرکت بده (درب را باز کن)
+                var startTok = movable.FirstOrDefault(t => t.currentTileIndex == 0);
+                if (startTok != null) return startTok;
 
-        // Otherwise pick an on-board token with best advancement
-        int bestScore = int.MinValue;
-
-        foreach (var t in tokens)
-        {
-            if (t == null) continue;
-            if (t.isMoving) continue;
-
-            if (!IsLegalMove(t, diceVal)) continue;
-
-            int score;
-            if (!t.isOnBoard)
-            {
-                // only legal if dice == 6; score as entering
-                score = 1000; // entering is usually strong; tweak if needed
+                // اگر به هر دلیل حرکتش قانونی نبود، بیفت سراغ بهترینِ دیگر
+                return ChooseBest(movable, diceVal);
             }
             else
             {
-                // prefer farther progress along flattened path
-                int projected = t.currentTileIndex + diceVal;
-                score = preferFarthestAdvance ? projected : Random.Range(0, 100);
-            }
+                // Start خالی است
+                if (preferEnterOnSix && hasHomeTokens)
+                {
+                    // یکی از مهره‌های خانه را وارد کن (فقط اگر قانونی باشد که هست چون dice=6)
+                    var offBoard = tokens.FirstOrDefault(t => t != null && !t.isOnBoard);
+                    if (offBoard != null && gameManager.IsLegalMove(self, offBoard, diceVal))
+                        return offBoard;
+                }
 
-            if (score > bestScore)
-            {
-                bestScore = score;
-                best = t;
+                // اگر نخواستیم وارد کنیم، یکی از روی برد را انتخاب کن
+                return ChooseBest(movable, diceVal);
             }
         }
 
-        return best;
+        // ۲) غیر از ۶ → فقط از روی برد انتخاب کن
+        return ChooseBest(movable, diceVal);
     }
 
-    private bool IsLegalMove(Token token, int diceVal)
+    private Token ChooseBest(List<Token> movable, int diceVal)
     {
-        // Match your current rules in GameManager:
-        // - If token is off-board, only legal if dice == 6
-        if (!token.isOnBoard)
-            return diceVal == 6;
+        // اولویت‌ها:
+        // A) اگر مهره‌ای روی Start هست (و قانونی) همونو ببر تا گره‌ی Start باز شه
+        var startTok = movable.FirstOrDefault(t => t.currentTileIndex == 0);
+        if (startTok != null) return startTok;
 
-        // On-board: assume legal (your GM/PlayerController will clamp/prevent overflow)
-        return true;
+        // B) اگر با این حرکت می‌تونیم حریف رو بزنیم، همونو انتخاب کن
+        foreach (var t in movable)
+            if (LandsOnEnemy(t, diceVal))
+                return t;
+
+        // C) در غیر این صورت، کسی که جلوتره/پیشرفت بیشتری داره
+        if (preferFarthestAdvance)
+            return movable.OrderByDescending(t => t.currentTileIndex + diceVal).First();
+        else
+            return movable[Random.Range(0, movable.Count)];
+    }
+
+    // تخمین سادهٔ فرود آمدن روی دشمن (ایمن‌بودن خانهٔ شروع لحاظ شده)
+    private bool LandsOnEnemy(Token me, int steps)
+    {
+        if (me == null || self == null) return false;
+
+        int targetIndex = me.isOnBoard ? me.currentTileIndex + steps : 0; // ورود با ۶ → 0
+        if (targetIndex == 0) return false; // خانه شروع را امن درنظر می‌گیریم
+
+        foreach (var p in gameManager.players)
+        {
+            if (p == null || p == self) continue;
+            foreach (var ot in p.Tokens)
+            {
+                if (ot == null || !ot.isOnBoard) continue;
+                if (ot.currentTileIndex == targetIndex)
+                {
+                    // اگر خانه امن پیچیده داری، می‌تونی اینجا هم چک اضافه کنی
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

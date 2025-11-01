@@ -48,7 +48,6 @@ public class MainLandBootstrap : MonoBehaviour
 
                 ai.gameManager  = gameManager;
                 ai.dice         = dice;
-                ai.boardManager = boardManager;
                 ai.self         = pc;
             }
             // اطمینان از انسانی بودن Player1

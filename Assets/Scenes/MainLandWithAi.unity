@@ -3860,6 +3860,7 @@ GameObject:
   m_Component:
   - component: {fileID: 787120862}
   - component: {fileID: 787120861}
+  - component: {fileID: 787120863}
   m_Layer: 0
   m_Name: Rules
   m_TagString: Untagged
@@ -3904,6 +3905,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &787120863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 787120860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3df9f5b1c7f5434a9388a8cc987f58c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  safeTileMarkers: []
+  safeEpsilon: 0.02
+  sameTileEpsilon: 0.001
 --- !u!1 &788382182
 GameObject:
   m_ObjectHideFlags: 0
@@ -4128,8 +4144,10 @@ MonoBehaviour:
   - {fileID: 1744505140}
   - {fileID: 1467508721}
   dice: {fileID: 619436029}
+  rules: {fileID: 787120863}
   enterOnlyOnSix: 1
   extraTurnOnSix: 1
+  canRoll: 1
 --- !u!1 &867691269
 GameObject:
   m_ObjectHideFlags: 0
@@ -4758,7 +4776,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 847207385}
   dice: {fileID: 619436029}
-  boardManager: {fileID: 541464574}
   self: {fileID: 0}
   rollDelay: 0.6
   selectDelay: 0.6
@@ -6035,7 +6052,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 847207385}
   dice: {fileID: 619436029}
-  boardManager: {fileID: 541464574}
   self: {fileID: 1467508721}
   rollDelay: 0.6
   selectDelay: 0.6
@@ -6775,7 +6791,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 847207385}
   dice: {fileID: 619436029}
-  boardManager: {fileID: 541464574}
   self: {fileID: 1744505140}
   rollDelay: 0.6
   selectDelay: 0.6
@@ -7036,7 +7051,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 847207385}
   dice: {fileID: 619436029}
-  boardManager: {fileID: 541464574}
   self: {fileID: 1835499167}
   rollDelay: 0.6
   selectDelay: 0.6
