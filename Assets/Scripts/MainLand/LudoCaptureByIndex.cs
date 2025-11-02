@@ -3,129 +3,220 @@ using UnityEngine;
 
 public class LudoCaptureByIndex : MonoBehaviour
 {
-    [Header("References")]
+       [Header("References")]
     public List<PlayerController> players = new List<PlayerController>();
     public BoardManager boardManager;
 
     [Header("Rules")]
-    public bool allowCaptureOnHomePath = false;   // usually false in Ludo
-    public bool allowCaptureOnStartTiles = true;  // many rules protect start; set false to protect
-    [Tooltip("Indices (on the common loop) that are safe (no capture).")]
+    public bool allowCaptureOnHomePath = false;   // معمولا false
+    public bool allowCaptureOnStartTiles = false; // false یعنی خانه‌های شروع امن‌اند
+    [Tooltip("RingId های امن (ستاره‌ها) روی لوپ مشترک.")]
     public List<int> safeLoopIndices = new List<int>();
+    public bool allowStackSameColor = true;       // هم‌رنگ‌ها می‌تونن هم‌خانه شوند
 
-    [Header("Owner Stack Behavior")]
-    public bool allowStackSameColor = true; // own tokens can share a tile (typical Ludo)
+    [Header("Same-tile precision")]
+    public bool enforceCenterSnap = true;         // برای اسنپ دقیق پیشنهاد می‌شود true باشد
+    public float ringCenterSnap = 0.08f;          // ~8cm
 
-    // track isMoving -> false transitions
-    private readonly Dictionary<Token, bool> movingSnapshot = new Dictionary<Token, bool>();
+    [Header("Auto-discovery")]
+    public bool autoFindPlayersIfEmpty = true;
+    public float autoFindInterval = 1.0f;
 
-    private void Start()
+    // snapshots
+    private readonly Dictionary<Token, bool> lastMoving = new Dictionary<Token, bool>();
+    private readonly Dictionary<Token, int>  lastIndex  = new Dictionary<Token, int>();
+    private float _findTimer;
+
+    private void OnEnable()
     {
         if (boardManager == null)
             boardManager = FindAnyObjectByType<BoardManager>();
-
-        foreach (var p in players)
-        {
-            if (p == null) continue;
-            foreach (var t in p.GetTokens())
-            {
-                if (t == null) continue;
-                if (!movingSnapshot.ContainsKey(t))
-                    movingSnapshot.Add(t, t.isMoving);
-            }
-        }
+        PrimePlayersAndTokens();
     }
 
     private void Update()
     {
+        // کشف خودکار پلیرها اگر لیست خالی است
+        if (autoFindPlayersIfEmpty && (players == null || players.Count == 0))
+        {
+            _findTimer -= Time.deltaTime;
+            if (_findTimer <= 0f)
+            {
+                _findTimer = autoFindInterval;
+                var found = FindObjectsOfType<PlayerController>();
+                if (found != null && found.Length > 0)
+                {
+                    players = new List<PlayerController>(found);
+                    PrimePlayersAndTokens();
+                    Debug.Log("[Capture] Auto-discovered players.");
+                }
+            }
+        }
+
+        if (players == null || players.Count == 0) return;
+        if (boardManager == null || boardManager.commonPath == null || boardManager.commonPath.Count == 0) return;
+
         foreach (var p in players)
         {
             if (p == null) continue;
-            foreach (var t in p.GetTokens())
+            var tokens = p.GetTokens();
+            if (tokens == null) continue;
+
+            foreach (var t in tokens)
             {
                 if (t == null) continue;
 
-                bool was = movingSnapshot.TryGetValue(t, out var prev) ? prev : false;
-                bool now = t.isMoving;
+                if (!lastMoving.ContainsKey(t)) lastMoving[t] = t.isMoving;
+                if (!lastIndex.ContainsKey(t))  lastIndex[t]  = t.currentTileIndex;
 
-                if (was && !now) // landed
-                {
-                    movingSnapshot[t] = now;
+                bool wasMoving = lastMoving[t];
+                int  wasIndex  = lastIndex[t];
+
+                bool nowMoving = t.isMoving;
+                int  nowIndex  = t.currentTileIndex;
+
+                bool landedNow = (wasMoving && !nowMoving) || ((nowIndex != wasIndex) && !nowMoving);
+
+                if (landedNow)
                     OnTokenLanded(t);
-                }
-                else
-                {
-                    movingSnapshot[t] = now;
-                }
+
+                lastMoving[t] = nowMoving;
+                lastIndex[t]  = nowIndex;
             }
         }
     }
 
     private void OnTokenLanded(Token landed)
     {
-        if (!landed.isOnBoard || boardManager == null) return;
+        if (landed == null || !landed.isOnBoard || boardManager == null) return;
 
         int commonCount = (boardManager.commonPath != null) ? boardManager.commonPath.Count : 0;
-        bool onHomePath = (landed.currentTileIndex >= commonCount);
+        if (commonCount <= 0) return;
 
-        // home path capture?
-        if (onHomePath && !allowCaptureOnHomePath) return;
+        bool moverOnHomePath = (landed.currentTileIndex >= commonCount);
 
-        // safe loop indices
-        if (!onHomePath && IsSafeLoopIndex(landed.currentTileIndex, commonCount))
-            return;
+        // در مسیر خانۀ پایان معمولا کپچر نداریم
+        if (moverOnHomePath && !allowCaptureOnHomePath) return;
 
-        // protect start tiles?
-        if (!onHomePath && !allowCaptureOnStartTiles && IsStartIndex(landed.currentTileIndex, commonCount))
-            return;
+        // RingId مهاجم
+        if (!TryGetRingId(landed, out int moverRing)) return;
 
-        // check opponents on the same tile index
+        // ــ اسنپ مهاجم به مرکز خانه (برای اینکه دقیقاً "روی هم" دیده شوند)
+        SnapToRingCenter(landed, moverRing);
+
         foreach (var p in players)
         {
             if (p == null) continue;
+            var tokens = p.GetTokens();
+            if (tokens == null) continue;
 
-            foreach (var other in p.GetTokens())
+            foreach (var other in tokens)
             {
                 if (other == null || other == landed) continue;
                 if (!other.isOnBoard) continue;
 
-                // same color? optionally allow stacking
-                if (other.color == landed.color)
-                {
-                    if (allowStackSameColor) continue; // no capture on same color
-                    // else fall-through: if you want same color to bump (usually not in Ludo)
-                }
+                bool otherOnHomePath = (other.currentTileIndex >= commonCount);
+                if ((moverOnHomePath || otherOnHomePath) && !allowCaptureOnHomePath)
+                    continue;
 
-                // compare by index (only reliable on the flattened path)
-                if (other.currentTileIndex == landed.currentTileIndex)
-                {
-                    // send that opponent token home
-                    SendHome(other);
-                    Debug.Log($"[Capture] {landed.owner.playerName} captured {other.owner.playerName}'s token.");
-                }
+                bool sameOwner = (other.owner != null && landed.owner != null && other.owner == landed.owner);
+                bool sameColor = other.color == landed.color ||
+                                 (other.owner != null && landed.owner != null &&
+                                  other.owner.color == landed.owner.color);
+                if ((sameOwner || sameColor) && allowStackSameColor)
+                    continue;
+
+                if (!TryGetRingId(other, out int otherRing))
+                    continue;
+
+                if (otherRing != moverRing)
+                    continue;
+
+                if (enforceCenterSnap && !BothNearRingCenter(moverRing, landed, other))
+                    continue;
+
+                if (IsSafeLoopIndex(otherRing, commonCount))
+                    continue;
+
+                if (!allowCaptureOnStartTiles && IsStartRing(otherRing, commonCount))
+                    continue;
+
+                // --- کُشتن: قربانی برگردد خانه (اولین اسلات خالی)
+                SendHomeRobust(other);
+
+                Debug.Log($"[Capture] {landed.owner?.playerName} captured {other.owner?.playerName}'s token.");
             }
         }
     }
 
-    private bool IsSafeLoopIndex(int idx, int commonCount)
+    // ===== Helpers =====
+
+    private bool TryGetRingId(Token t, out int ringId)
     {
-        if (idx < 0 || idx >= commonCount) return false;
-        return safeLoopIndices != null && safeLoopIndices.Contains(idx);
+        ringId = -1;
+        if (t == null || t.owner == null) return false;
+        var bm = t.owner.boardManager != null ? t.owner.boardManager : boardManager;
+        if (bm == null) return false;
+        return bm.TryGetRingId(t.owner.color, t.currentTileIndex, out ringId);
     }
 
-    private bool IsStartIndex(int idx, int commonCount)
+    private void SnapToRingCenter(Token t, int ringId)
+    {
+        if (!enforceCenterSnap) return;
+        var list = boardManager?.commonPath;
+        if (list == null || ringId < 0 || ringId >= list.Count) return;
+        var center = list[ringId];
+        if (center == null) return;
+        // اگر فیزیک داری، برخوردها را لحظه‌ای غیرفعال کن تا روی هم بنشینند
+        var col = t.GetComponent<Collider>();
+        if (col) col.enabled = false;
+        t.transform.position = center.position;
+        if (col) col.enabled = true;
+    }
+
+    private bool BothNearRingCenter(int ringId, Token a, Token b)
+    {
+        var list = boardManager?.commonPath;
+        if (list == null || ringId < 0 || ringId >= list.Count) return true;
+        var center = list[ringId];
+        if (center == null) return true;
+
+        float thresholdSq = ringCenterSnap * ringCenterSnap;
+        float da = (a.transform.position - center.position).sqrMagnitude;
+        float db = (b.transform.position - center.position).sqrMagnitude;
+
+        if (da > thresholdSq) { Debug.Log($"[SameTile] A far from center ({Mathf.Sqrt(da):0.000})"); return false; }
+        if (db > thresholdSq) { Debug.Log($"[SameTile] B far from center ({Mathf.Sqrt(db):0.000})"); return false; }
+        return true;
+    }
+
+    private bool IsSafeLoopIndex(int idx, int commonCount)
+    {
+        if (commonCount <= 0) return false;
+        int m = Mod(idx, commonCount);
+        return safeLoopIndices != null && safeLoopIndices.Contains(m);
+    }
+
+    private bool IsStartRing(int ringId, int commonCount)
     {
         if (boardManager == null || commonCount <= 0) return false;
-
         int r = Mod(boardManager.redStartIndex, commonCount);
         int b = Mod(boardManager.blueStartIndex, commonCount);
         int g = Mod(boardManager.greenStartIndex, commonCount);
         int y = Mod(boardManager.yellowStartIndex, commonCount);
-
-        return idx == r || idx == b || idx == g || idx == y;
+        int m = Mod(ringId, commonCount);
+        return m == r || m == b || m == g || m == y;
     }
 
-    private void SendHome(Token token)
+    private static int Mod(int a, int m)
+    {
+        if (m <= 0) return a;
+        int r = a % m;
+        return r < 0 ? r + m : r;
+    }
+
+    // --- Robust home send (اولین اسلات خالی + ریست state)
+    private void SendHomeRobust(Token token)
     {
         var owner = token.owner;
         if (owner == null || owner.spawnPoints == null || owner.spawnPoints.Count == 0)
@@ -134,21 +225,87 @@ public class LudoCaptureByIndex : MonoBehaviour
             return;
         }
 
-        // reset token state
+        // اگر انیمیشن/کوروتینی در حال حرکت دارد، اینجا قطعش کن (در صورت وجود API)
+        // token.StopAllCoroutines(); // اگر مجاز است
+
         token.isMoving = false;
         token.isOnBoard = false;
         token.currentTileIndex = -1;
 
-        // pick a spawn point (first free if you track occupancy; here just first)
-        Transform target = owner.spawnPoints[0];
-        token.transform.position = target.position;
+        // اگر فیلدهای دیگری داری که مربوط به مسیر/هوم‌پث‌اند، اینجا ریست کن:
+        // token.enteredHomePath = false;
+        // token.pathProgress = 0f;
 
-        // If your Token has its own reset/init method, call it here instead (e.g., token.ResetToHome();)
+        int slot = FindFirstFreeHomeSlot(owner, token);
+        Transform target = owner.spawnPoints[Mathf.Clamp(slot, 0, owner.spawnPoints.Count - 1)];
+
+        // detach از هر والد
+        token.transform.SetParent(null, true);
+        // برای اطمینان از روی هم نیفتادن فیزیکی:
+        var col = token.GetComponent<Collider>();
+        if (col) col.enabled = false;
+        token.transform.position = target.position;
+        token.transform.rotation = Quaternion.identity;
+        if (col) col.enabled = true;
+
+        // اگر Token متد ریست خودش را دارد:
+        // token.ResetToHome();
+
+        Debug.Log($"[SendHome] {token.name} -> {owner.color} spawn slot {slot}");
     }
 
-    private static int Mod(int a, int m)
+    private int FindFirstFreeHomeSlot(PlayerController owner, Token exceptThis = null)
     {
-        int r = a % m;
-        return r < 0 ? r + m : r;
+        int n = owner.spawnPoints.Count;
+        bool[] occ = new bool[n];
+
+        foreach (var t in owner.GetTokens())
+        {
+            if (t == null || t == exceptThis) continue;
+            if (t.isOnBoard) continue;
+
+            int idx = NearestSpawnIndex(owner, t.transform.position);
+            if (idx >= 0 && idx < n) occ[idx] = true;
+        }
+
+        for (int i = 0; i < n; i++)
+            if (!occ[i] && owner.spawnPoints[i] != null) return i;
+
+        // اگر همه پر بود، نزدیک‌ترین رو انتخاب کن تا overlap کمتر باشه
+        int best = NearestSpawnIndex(owner, exceptThis != null ? exceptThis.transform.position : owner.spawnPoints[0].position);
+        return best >= 0 ? best : 0;
+    }
+
+    private int NearestSpawnIndex(PlayerController pc, Vector3 pos)
+    {
+        if (pc == null || pc.spawnPoints == null || pc.spawnPoints.Count == 0) return -1;
+        float best = float.MaxValue;
+        int bestIdx = -1;
+        for (int i = 0; i < pc.spawnPoints.Count; i++)
+        {
+            var sp = pc.spawnPoints[i];
+            if (sp == null) continue;
+            float d = (pos - sp.position).sqrMagnitude;
+            if (d < best) { best = d; bestIdx = i; }
+        }
+        return bestIdx;
+    }
+
+    private void PrimePlayersAndTokens()
+    {
+        if (players == null) players = new List<PlayerController>();
+        foreach (var p in players)
+        {
+            if (p == null) continue;
+            var tokens = p.GetTokens();
+            if (tokens == null) continue;
+            foreach (var t in tokens)
+            {
+                if (t == null) continue;
+                if (!lastMoving.ContainsKey(t)) lastMoving.Add(t, t.isMoving);
+                if (!lastIndex.ContainsKey(t))  lastIndex.Add(t, t.currentTileIndex);
+            }
+        }
+        _findTimer = autoFindInterval;
     }
 }

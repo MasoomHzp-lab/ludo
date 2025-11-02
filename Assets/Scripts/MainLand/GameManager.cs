@@ -214,9 +214,6 @@ public class GameManager : MonoBehaviour
 
         rules?.HandleIfFinished(token);
 
-        // بعد از اتمام حرکت، برخورد/کشتن را بررسی کن (در RulesManager)
-        rules?.ResolveCaptures(this, token);
-
         // بعد از اتمام حرکت، نوبت را جلو ببریم یا نگه داریم
         yield return StartCoroutine(WaitAndAdvanceTurn());
     }

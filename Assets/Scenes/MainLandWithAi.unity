@@ -2823,6 +2823,98 @@ MonoBehaviour:
   blueHomeEntryOffset: -1
   yellowHomeEntryOffset: -1
   greenHomeEntryOffset: -1
+--- !u!1 &549913206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 549913209}
+  - component: {fileID: 549913207}
+  - component: {fileID: 549913210}
+  m_Layer: 0
+  m_Name: Rules
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &549913207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549913206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3df9f5b1c7f5434a9388a8cc987f58c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finishBays:
+  - color: 0
+    slots:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - color: 1
+    slots:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - color: 3
+    slots:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  - color: 2
+    slots:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+--- !u!4 &549913209
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549913206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9003267, y: -0.3656859, z: 0.038693897}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &549913210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549913206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8071d7744584bd4fa13c7b95088193d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  players: []
+  boardManager: {fileID: 0}
+  allowCaptureOnHomePath: 0
+  allowCaptureOnStartTiles: 0
+  safeLoopIndices: 
+  allowStackSameColor: 1
+  enforceCenterSnap: 1
+  ringCenterSnap: 0.08
+  autoFindPlayersIfEmpty: 1
+  autoFindInterval: 1
 --- !u!1 &550511132
 GameObject:
   m_ObjectHideFlags: 0
@@ -3850,76 +3942,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &787120860
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 787120862}
-  - component: {fileID: 787120861}
-  - component: {fileID: 787120863}
-  m_Layer: 0
-  m_Name: Rules
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &787120861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 787120860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8071d7744584bd4fa13c7b95088193d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  players:
-  - {fileID: 339502421}
-  - {fileID: 1835499167}
-  - {fileID: 1744505140}
-  - {fileID: 1467508721}
-  boardManager: {fileID: 541464574}
-  allowCaptureOnHomePath: 0
-  allowCaptureOnStartTiles: 1
-  safeLoopIndices: 000000000b0000001600000021000000
-  allowStackSameColor: 1
---- !u!4 &787120862
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 787120860}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.9003267, y: -0.3656859, z: 0.038693897}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &787120863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 787120860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3df9f5b1c7f5434a9388a8cc987f58c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  safeTileMarkers: []
-  safeEpsilon: 0.02
-  sameTileEpsilon: 0.001
 --- !u!1 &788382182
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,7 +4166,7 @@ MonoBehaviour:
   - {fileID: 1744505140}
   - {fileID: 1467508721}
   dice: {fileID: 619436029}
-  rules: {fileID: 787120863}
+  rules: {fileID: 0}
   enterOnlyOnSix: 1
   extraTurnOnSix: 1
   canRoll: 1
@@ -8417,7 +8439,7 @@ SceneRoots:
   - {fileID: 291645618}
   - {fileID: 495333891}
   - {fileID: 1843772570}
-  - {fileID: 787120862}
   - {fileID: 995664570}
   - {fileID: 1915411070}
   - {fileID: 701575964}
+  - {fileID: 549913209}

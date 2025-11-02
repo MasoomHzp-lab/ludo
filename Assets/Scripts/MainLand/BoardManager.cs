@@ -157,6 +157,36 @@ public class BoardManager : MonoBehaviour
             Debug.LogWarning($"[BoardManager] Home path for {name} is empty (can be temporary).");
     }
 
+        // طول بخشِ حلقه برای هر رنگ (از start تا home-entry «شاملِ هر دو»)
+       public int GetLoopLength(PlayerColor color)
+{
+    if (commonPath == null || commonPath.Count == 0) return 0;
+
+    int start = GetStartIndex(color);
+    int entryOffset = GetHomeEntryOffset(color);
+    int entry = Mod(start + entryOffset, commonPath.Count);
+
+    int dist = (entry - start);
+    if (dist < 0) dist += commonPath.Count;
+    return dist + 1; // شامل start و entry
+}
+
+public bool TryGetRingId(PlayerColor color, int currentTileIndex, out int ringId)
+{
+    ringId = -1;
+    if (commonPath == null || commonPath.Count == 0) return false;
+    if (currentTileIndex < 0) return false;
+
+    int loopLen = GetLoopLength(color);
+    if (currentTileIndex >= loopLen) return false; // وارد منزل شده
+
+    int start = GetStartIndex(color);
+    ringId = Mod(start + currentTileIndex, commonPath.Count);
+    return true;
+}
+
+
+
     private void OnDrawGizmosSelected()
     {
         if (commonPath != null && commonPath.Count > 1)

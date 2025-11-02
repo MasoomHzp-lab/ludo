@@ -4,68 +4,37 @@ using UnityEngine;
 
 public class RulesManager : MonoBehaviour
 {
-    [Header("Safe Tiles (assign in Inspector)")]
-    public List<Transform> safeTileMarkers = new List<Transform>(); // ستاره‌ها/خانه‌های امن
-    public float safeEpsilon = 0.02f;       // تلورانس تشخیص موقعیت امن
-    public float sameTileEpsilon = 0.001f;  // تلورانس تشخیص هم‌خانه‌ای (~1mm)
-
-    // ---------- Finish Bays ----------
+       // ---------- Finish Bays ----------
     [System.Serializable]
     public class FinishBay
     {
         public PlayerColor color;
-        public List<Transform> slots = new List<Transform>(); // ترتیب دلخواه: (نارنجی، زرد، بنفش، صورتی)
+        public List<Transform> slots = new List<Transform>(); // ترتیب اسلات‌ها
     }
 
     [Header("Finish Bays (assign in Inspector)")]
     public List<FinishBay> finishBays = new List<FinishBay>();
 
-    // مهره‌هایی که بازی‌شان تمام شده (در خانهٔ نهایی قرار گرفته‌اند)
+    // ---------- Internal State ----------
     private readonly HashSet<Token> finishedTokens = new HashSet<Token>();
-
-    // اسلات خانۀ اختصاصی هر مهره (Home/Spawn) — بدون تغییر Token.cs
     private readonly Dictionary<Token, int> homeSlotOfToken = new Dictionary<Token, int>();
 
-    // ---------- API عمومی که GameManager صدا می‌زند ----------
+    // ======================================
+    // Public API (GameManager / others call these)
+    // ======================================
 
+    /// تمام مهره‌ها را به نزدیک‌ترین اسلات خانه‌شان مپ می‌کند (برای شروع بازی/لود صحنه)
     public void EnsureHomeSlotAssignedForAll(List<PlayerController> players)
     {
         if (players == null) return;
         foreach (var p in players)
         {
             if (p == null || p.Tokens == null) continue;
-            foreach (var t in p.Tokens)
-                EnsureHomeSlotAssigned(t);
+            foreach (var t in p.Tokens) EnsureHomeSlotAssigned(t);
         }
     }
 
-    public void ResolveCaptures(GameManager gm, Token mover)
-    {
-        if (gm == null || mover == null || !mover.isOnBoard) return;
-        if (IsSafeTile(mover)) return;
-
-        foreach (var p in gm.players)
-        {
-            if (p == null || p.Tokens == null) continue;
-            foreach (var other in p.Tokens)
-            {
-                if (other == null || other == mover) continue;
-                if (!other.isOnBoard) continue;
-                if (finishedTokens.Contains(other)) continue; // تو Finish هست → برخورد نشه
-
-                if (AreOnSameTile(mover, other))
-                {
-                    if (other.owner == mover.owner) continue;
-                    if (IsSafeTile(other)) continue;
-
-                    SendTokenHome(other);
-                    Debug.Log($"[Capture] {mover.owner.playerName} captured {other.owner.playerName}'s token.");
-                }
-            }
-        }
-    }
-
-    /// وقتی مهره به آخر مسیر خودش رسید، بفرستش داخل خانهٔ نهایی در اولین اسلات خالی
+    /// وقتی مهره به آخر مسیر خودش رسید (آخر FullPath)
     public void HandleIfFinished(Token t)
     {
         if (t == null || t.owner == null || !t.isOnBoard) return;
@@ -78,14 +47,13 @@ public class RulesManager : MonoBehaviour
         if (path == null || path.Count == 0) return;
 
         int lastIndex = path.Count - 1;
-        if (t.currentTileIndex != lastIndex) return; // هنوز به آخر مسیر نرسیده
+        if (t.currentTileIndex != lastIndex) return;
 
-        // جدا از برد
+        // خروج از برد و انتقال به FinishBay
         t.isOnBoard = false;
         t.isMoving = false;
-        t.currentTileIndex = -999; // نشانگر اختیاری: Finished
+        t.currentTileIndex = -999;
 
-        // پیدا کردن Bay مربوط به همین رنگ
         var bay = GetBay(pc.color);
         if (bay == null || bay.slots == null || bay.slots.Count == 0)
         {
@@ -101,55 +69,36 @@ public class RulesManager : MonoBehaviour
         finishedTokens.Add(t);
     }
 
-    public bool IsSafeTile(Token t)
+    /// به صورت دستی برگرداندن مهره به خانه (اگر جای دیگری لازم داشته باشی)
+    public void SendTokenHome(Token t)
     {
-        if (t == null || t.owner == null) return false;
+        if (t == null || t.owner == null) return;
 
-        // 1) خانه‌ی شروع هر رنگ امن است
-        if (t.isOnBoard && t.currentTileIndex == 0) return true;
+        finishedTokens.Remove(t);
+        t.isOnBoard = false;
+        t.isMoving = false;
+        t.currentTileIndex = -1;
 
-        // 2) مارکرهای امن (اختیاری از اینسپکتور)
-        if (safeTileMarkers != null && safeTileMarkers.Count > 0)
+        int slot = FindHomeSlotFor(t);
+        homeSlotOfToken[t] = slot;
+
+        var pc = t.owner;
+        if (pc != null && pc.spawnPoints != null && pc.spawnPoints.Count > 0)
         {
-            Vector3 pos = t.transform.position;
-            float sq = safeEpsilon * safeEpsilon;
-            foreach (var m in safeTileMarkers)
-            {
-                if (m == null) continue;
-                if ((pos - m.position).sqrMagnitude <= sq)
-                    return true;
-            }
+            int idx = Mathf.Clamp(slot, 0, pc.spawnPoints.Count - 1);
+            var sp = pc.spawnPoints[idx];
+            if (sp != null) t.transform.position = sp.position;
         }
 
-        // 3) اگر BoardManager API امن دارد، اینجا استفاده کن (اختیاری)
-        try
-        {
-            var bm = (t.owner != null) ? t.owner.boardManager : null;
-            if (bm != null)
-            {
-                // if (bm.IsSafeTile(t.owner.color, t.currentTileIndex)) return true;
-                // if (bm.IsInHomePath(t.owner.color, t.currentTileIndex)) return true;
-            }
-        }
-        catch { }
-
-        return false;
+        Debug.Log($"[SendHome] {t.name} -> {t.owner.color} spawn slot {slot}");
     }
 
-    public bool AreOnSameTile(Token a, Token b)
-    {
-        if (a == null || b == null) return false;
-        if (!a.isOnBoard || !b.isOnBoard) return false;
+    /// آیا این مهره جزو تمام‌شده‌هاست؟
+    public bool IsFinished(Token t) => t != null && finishedTokens.Contains(t);
 
-        // گرد کردن برای حذف نویز
-        Vector3 pa = Snap(a.transform.position);
-        Vector3 pb = Snap(b.transform.position);
-
-        float sq = sameTileEpsilon * sameTileEpsilon;
-        return (pa - pb).sqrMagnitude <= sq;
-    }
-
-    // ---------- داخلی: Finish Bays ----------
+    // ======================================
+    // Finish Bay helpers
+    // ======================================
 
     private FinishBay GetBay(PlayerColor color)
     {
@@ -162,22 +111,23 @@ public class RulesManager : MonoBehaviour
     private int FindFirstFreeFinishSlot(PlayerController pc, FinishBay bay)
     {
         int n = bay.slots.Count;
+        if (n <= 0) return 0;
+
         bool[] occupied = new bool[n];
 
-        // هر مهرهٔ تمام‌شدهٔ همین بازیکن → نزدیک‌ترین اسلات را اشغال کرده فرض کن
         foreach (var tok in pc.Tokens)
         {
             if (tok == null) continue;
             if (!finishedTokens.Contains(tok)) continue;
 
             int idx = NearestIndex(bay.slots, tok.transform.position);
-            if (idx >= 0 && idx < n) occupied[idx] = true;
+            if (idx >= 0 && idx < n) occupied[idx = Mathf.Clamp(idx, 0, n - 1)] = true;
         }
 
         for (int i = 0; i < n; i++)
             if (!occupied[i]) return i;
 
-        return 0; // نادر: اگر همه پر بود
+        return 0;
     }
 
     private int NearestIndex(List<Transform> points, Vector3 pos)
@@ -195,28 +145,9 @@ public class RulesManager : MonoBehaviour
         return bestIdx;
     }
 
-    // ---------- داخلی: Home/Spawn ----------
-
-    private void SendTokenHome(Token t)
-    {
-        if (t == null || t.owner == null) return;
-
-        finishedTokens.Remove(t);   // اگر قبلاً در Finish بود، حذف شود
-        t.isOnBoard = false;
-        t.isMoving = false;
-        t.currentTileIndex = -1;
-
-        int slot = FindHomeSlotFor(t);
-        homeSlotOfToken[t] = slot;
-
-        var pc = t.owner;
-        if (pc != null && pc.spawnPoints != null && pc.spawnPoints.Count > 0)
-        {
-            int idx = Mathf.Clamp(slot, 0, pc.spawnPoints.Count - 1);
-            var sp = pc.spawnPoints[idx];
-            if (sp != null) t.transform.position = sp.position;
-        }
-    }
+    // ======================================
+    // Home / Spawn helpers
+    // ======================================
 
     private void EnsureHomeSlotAssigned(Token t)
     {
@@ -250,11 +181,12 @@ public class RulesManager : MonoBehaviour
             else
             {
                 int nearest = NearestSpawnIndex(pc, tok.transform.position);
-                if (nearest >= 0) occupied[nearest] = true;
+                if (nearest >= 0 && nearest < count) occupied[nearest] = true;
             }
         }
 
-        if (homeSlotOfToken.TryGetValue(t, out int mySlot) && mySlot >= 0 && mySlot < count && !occupied[mySlot])
+        if (homeSlotOfToken.TryGetValue(t, out int mySlot) &&
+            mySlot >= 0 && mySlot < count && !occupied[mySlot])
             return mySlot;
 
         int bestIdx = -1;
@@ -281,13 +213,5 @@ public class RulesManager : MonoBehaviour
             if (d < best) { best = d; bestIdx = i; }
         }
         return bestIdx;
-    }
-
-    private static Vector3 Snap(Vector3 v)
-    {
-        v.x = Mathf.Round(v.x * 1000f) / 1000f;
-        v.y = Mathf.Round(v.y * 1000f) / 1000f;
-        v.z = Mathf.Round(v.z * 1000f) / 1000f;
-        return v;
     }
 }
