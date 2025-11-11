@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainLand.unity
     guid: cb49a02428be307449d31e4722821e42
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OnlinePage.unity
     guid: 96e2c7f387caed545a4b56f4182be61c
   - enabled: 1
@@ -20,13 +20,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainLandWithAi.unity
     guid: 0ed05e0157ccf4440842382ab6f10d56
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FriendlyGame.unity
     guid: 45cce1d7910325d45ad66a36dde50c1b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainLandOnline.unity
     guid: 34b608be520eda44f98a52b3e6ada53d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainLandOnlinePro.unity
     guid: b99e93b57a3ce5147aaffdff552f9a89
   m_configObjects:
