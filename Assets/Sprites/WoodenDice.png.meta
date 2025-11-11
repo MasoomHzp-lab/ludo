@@ -3,83 +3,23 @@ guid: 12fc274b168b790cc92aa3f122640b7c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3858442786510194047
-    second: New Project (1)_0
+      213: 5036830441464340140
+    second: WoodenDice_0
   - first:
-      213: 4658461570455239070
-    second: New Project (1)_1
+      213: -6665851039016111142
+    second: WoodenDice_1
   - first:
-      213: 8174236908439186778
-    second: New Project (1)_2
+      213: -220290015429392586
+    second: WoodenDice_2
   - first:
-      213: -7684412949682010179
-    second: New Project (1)_3
+      213: 2799923516249797802
+    second: WoodenDice_3
   - first:
-      213: -5848913593153792136
-    second: New Project (1)_4
+      213: 8016136836408318676
+    second: WoodenDice_4
   - first:
-      213: 9168642218371075729
-    second: New Project (1)_5
-  - first:
-      213: -5759391129204909480
-    second: New Project (1)_6
-  - first:
-      213: 705103237752040651
-    second: New Project (1)_7
-  - first:
-      213: 3956930387375272973
-    second: New Project (1)_8
-  - first:
-      213: -8727443763792584741
-    second: New Project (1)_9
-  - first:
-      213: -969306654457229429
-    second: New Project (1)_10
-  - first:
-      213: 8570100889538320239
-    second: New Project (1)_11
-  - first:
-      213: -1035674480981006243
-    second: New Project (1)_12
-  - first:
-      213: 7506096144406593702
-    second: New Project (1)_13
-  - first:
-      213: -3356430975336846059
-    second: New Project (1)_14
-  - first:
-      213: -3017578313775579746
-    second: New Project (1)_15
-  - first:
-      213: 3254051341031235304
-    second: New Project (1)_16
-  - first:
-      213: 981592923923908244
-    second: New Project (1)_17
-  - first:
-      213: -3353730255771020980
-    second: New Project (1)_18
-  - first:
-      213: 6667240890641851624
-    second: New Project (1)_19
-  - first:
-      213: -1352557023996591425
-    second: New Project (1)_20
-  - first:
-      213: -6363600000698531814
-    second: New Project (1)_21
-  - first:
-      213: 1827031709068118574
-    second: New Project (1)_22
-  - first:
-      213: 881392381435076776
-    second: New Project (1)_23
-  - first:
-      213: 2070319716322930399
-    second: New Project (1)_24
-  - first:
-      213: 6324670292526478219
-    second: New Project (1)_25
+      213: -7335487244395197584
+    second: WoodenDice_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -204,20 +144,20 @@ TextureImporter:
       name: WoodenDice_0
       rect:
         serializedVersion: 2
-        x: 50
-        y: 387
-        width: 277
-        height: 288
+        x: 29
+        y: 227
+        width: 164
+        height: 172
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: dc8c9c675dae886399663d4efd3594f7
-      internalID: 1507010254
+      spriteID: cae1b59a99a66e540800000000000000
+      internalID: 5036830441464340140
       vertices: []
       indices: 
       edges: []
@@ -226,20 +166,20 @@ TextureImporter:
       name: WoodenDice_1
       rect:
         serializedVersion: 2
-        x: 387
-        y: 390
-        width: 273
-        height: 284
+        x: 225
+        y: 227
+        width: 166
+        height: 172
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b537ef74337e1563e8cadc94309df2c7
-      internalID: 326956553
+      spriteID: ad3b6c51cc32e73a0800000000000000
+      internalID: -6665851039016111142
       vertices: []
       indices: 
       edges: []
@@ -248,20 +188,20 @@ TextureImporter:
       name: WoodenDice_2
       rect:
         serializedVersion: 2
-        x: 706
-        y: 392
-        width: 274
-        height: 285
+        x: 412
+        y: 230
+        width: 165
+        height: 171
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 6791ff8c5271e21729a65a554e640475
-      internalID: -1600867379
+      spriteID: 63704cae56f51fcf0800000000000000
+      internalID: -220290015429392586
       vertices: []
       indices: 
       edges: []
@@ -270,20 +210,20 @@ TextureImporter:
       name: WoodenDice_3
       rect:
         serializedVersion: 2
-        x: 51
-        y: 45
-        width: 275
-        height: 284
+        x: 29
+        y: 25
+        width: 164
+        height: 170
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 3d1d447612572d663927d581a106f7d4
-      internalID: -567909453
+      spriteID: aa4f4587a935bd620800000000000000
+      internalID: 2799923516249797802
       vertices: []
       indices: 
       edges: []
@@ -292,20 +232,20 @@ TextureImporter:
       name: WoodenDice_4
       rect:
         serializedVersion: 2
-        x: 379
-        y: 48
-        width: 277
-        height: 285
+        x: 222
+        y: 27
+        width: 165
+        height: 171
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: f2ae4fc0dedea79fbb1d04a095f198cb
-      internalID: -570515856
+      spriteID: 4da9a0d3bf90f3f60800000000000000
+      internalID: 8016136836408318676
       vertices: []
       indices: 
       edges: []
@@ -314,20 +254,20 @@ TextureImporter:
       name: WoodenDice_5
       rect:
         serializedVersion: 2
-        x: 703
-        y: 51
-        width: 272
-        height: 283
+        x: 412
+        y: 28
+        width: 165
+        height: 170
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 57f37871dedacb938ae6d75394ccaf1c
-      internalID: 721361213
+      spriteID: 07b4a6f573d133a90800000000000000
+      internalID: -7335487244395197584
       vertices: []
       indices: 
       edges: []
@@ -336,7 +276,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 15c12fc0c90a190cc9f499e57ccfaa97
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -346,12 +286,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WoodenDice_0: 1507010254
-      WoodenDice_1: 326956553
-      WoodenDice_2: -1600867379
-      WoodenDice_3: -567909453
-      WoodenDice_4: -570515856
-      WoodenDice_5: 721361213
+      WoodenDice_0: 5036830441464340140
+      WoodenDice_1: -6665851039016111142
+      WoodenDice_2: -220290015429392586
+      WoodenDice_3: 2799923516249797802
+      WoodenDice_4: 8016136836408318676
+      WoodenDice_5: -7335487244395197584
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
