@@ -17,8 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OFFlineGame.unity
     guid: 8ec01687ccdb44cce9d79d83e4ced34d
-  - enabled: 1
-    path: Assets/Scenes/MainLandWithAi.unity
+  - enabled: 0
+    path: Assets/Scenes/MainLandWith1Ai.unity
     guid: 0ed05e0157ccf4440842382ab6f10d56
   - enabled: 0
     path: Assets/Scenes/FriendlyGame.unity
@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/MainLandOnlinePro.unity
     guid: b99e93b57a3ce5147aaffdff552f9a89
+  - enabled: 1
+    path: Assets/Scenes/MainLandWithAi.unity
+    guid: 94379a6344bc49345b2b4189e946f2c4
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

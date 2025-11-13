@@ -15,9 +15,6 @@ public class CheatManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    /// <summary>
-    /// مقدار تاس بعدی را به طور موقت قفل می‌کند (مثلاً ۶) و بعد از timeout ثانیه منقضی می‌شود.
-    /// </summary>
     public void ForceNextRoll(int value, float timeoutSeconds = 3f)
     {
         forcedNextRoll = Mathf.Clamp(value, 1, 6);
@@ -27,9 +24,6 @@ public class CheatManager : MonoBehaviour
 #endif
     }
 
-    /// <summary>
-    /// اگر مقدار زورکی موجود و منقضی نشده باشد، آن را مصرف می‌کند.
-    /// </summary>
     public bool TryConsumeForcedRoll(out int value)
     {
         if (forcedNextRoll.HasValue && Time.unscaledTime <= expireAt)
