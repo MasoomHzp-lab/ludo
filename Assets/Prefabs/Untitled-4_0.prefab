@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7410458590484805109}
   - component: {fileID: 619641344694513739}
-  - component: {fileID: -9214236979591918921}
   - component: {fileID: -8232824355658531973}
   - component: {fileID: -5868278387183957808}
+  - component: {fileID: 4647251387426321302}
   m_Layer: 0
   m_Name: Untitled-4_0
   m_TagString: Untagged
@@ -79,31 +79,17 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: -1463966574967315270, guid: b8e46b96972b0cb48b7047460800463c, type: 3}
+  m_Sprite: {fileID: 8681727540854981480, guid: 0877b6606a3f9fd6eaad2739c1ae8473, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.46, y: 1.47}
+  m_Size: {x: 0.48, y: 0.48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-9214236979591918921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7345707790143926242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bc4f047dd78d6b5f8e4da1c1d2e01b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 2100000, guid: 4b36256cd970ba73ca39a6a8ac2a9de1, type: 2}
-  GeneralMaterial: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
 --- !u!114 &-8232824355658531973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +107,7 @@ MonoBehaviour:
   isMoving: 0
   isOnBoard: 0
   owner: {fileID: 0}
+  homeSlot: -1
 --- !u!58 &-5868278387183957808
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -157,3 +144,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.73499995
+--- !u!114 &4647251387426321302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7345707790143926242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595cdf0b5f71c3603995c1ba132174ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pulseSpeed: 2
+  pulseAmount: 0.2
+  glowColor: {r: 0.9716981, g: 0.8110714, b: 0.2704254, a: 1}
+  glowIntensity: 2

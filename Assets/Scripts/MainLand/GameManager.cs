@@ -119,26 +119,28 @@ public class GameManager : MonoBehaviour
             Debug.Log($"[Turn] {CurrentPlayer.playerName}");
         }
 
-        // خاموش کردن درخشش همه بازیکن‌ها
-        foreach (var p in players)
+      // خاموش کردن انیمیشن همه مهره‌ها
+    foreach (var p in players)
+    {
+        if (p == null || p.Tokens == null) continue;
+        foreach (var t in p.Tokens)
         {
-            if (p == null || p.Tokens == null) continue;
-            foreach (var t in p.Tokens)
-            {
-                var glow = t.GetComponent<OutLineGlow>();
-                if (glow != null) glow.SetGlow(false);
-            }
+            if (t == null) continue;
+            var animator = t.GetComponent<PieceAnimator>();
+            if (animator != null) animator.SetActive(false);
         }
+    }
 
-        // روشن کردن درخشش بازیکن فعلی
-        if (CurrentPlayer != null && CurrentPlayer.Tokens != null)
+    // روشن کردن انیمیشن مهره‌های بازیکن فعلی (درصورت وجود)
+    if (CurrentPlayer != null && CurrentPlayer.Tokens != null)
+    {
+        foreach (var t in CurrentPlayer.Tokens)
         {
-            foreach (var t in CurrentPlayer.Tokens)
-            {
-                var glow = t.GetComponent<OutLineGlow>();
-                if (glow != null) glow.SetGlow(true);
-            }
+            if (t == null) continue;
+            var animator = t.GetComponent<PieceAnimator>();
+            if (animator != null) animator.SetActive(true);
         }
+    }
 
         canRoll = true; // بازیکن جدید می‌تواند تاس بیندازد
     }

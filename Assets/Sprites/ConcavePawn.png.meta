@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 9b80accf463e9e3f49f45b8406d7019b
+guid: 0877b6606a3f9fd6eaad2739c1ae8473
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8225384326936410171
-    second: ConcavePawn_0
+      213: 8206882486010722110
+    second: ConcavePawn (1)_0
   - first:
-      213: -3821546014351083993
-    second: ConcavePawn_1
+      213: 8681727540854981480
+    second: ConcavePawn (1)_1
   - first:
-      213: -5024536986433438495
-    second: ConcavePawn_2
+      213: 1534781740747731349
+    second: ConcavePawn (1)_2
   - first:
-      213: -2475663856683694785
-    second: ConcavePawn_3
+      213: 4180042392949744490
+    second: ConcavePawn (1)_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -135,13 +135,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ConcavePawn_0
+      name: ConcavePawn (1)_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 267
-        width: 224
-        height: 225
+        x: 0
+        y: 52
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c7c3ebd88099dd80800000000000000
-      internalID: -8225384326936410171
+      spriteID: e373b0c9324b4e170800000000000000
+      internalID: 8206882486010722110
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ConcavePawn_1
+      name: ConcavePawn (1)_1
       rect:
         serializedVersion: 2
-        x: 268
-        y: 267
-        width: 226
-        height: 225
+        x: 52
+        y: 52
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -172,20 +172,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7263bc9b52427fac0800000000000000
-      internalID: -3821546014351083993
+      spriteID: 863036d5331bb7870800000000000000
+      internalID: 8681727540854981480
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ConcavePawn_2
+      name: ConcavePawn (1)_2
       rect:
         serializedVersion: 2
-        x: 7
-        y: 7
-        width: 225
-        height: 225
+        x: 0
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -194,20 +194,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ecb2d26b32454ab0800000000000000
-      internalID: -5024536986433438495
+      spriteID: 59136019cd3ac4510800000000000000
+      internalID: 1534781740747731349
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ConcavePawn_3
+      name: ConcavePawn (1)_3
       rect:
         serializedVersion: 2
-        x: 268
-        y: 7
-        width: 225
-        height: 225
+        x: 52
+        y: 0
+        width: 48
+        height: 48
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -216,8 +216,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f354817c6dca4add0800000000000000
-      internalID: -2475663856683694785
+      spriteID: a63e7d9d86e720a30800000000000000
+      internalID: 4180042392949744490
       vertices: []
       indices: 
       edges: []
@@ -236,10 +236,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ConcavePawn_0: -8225384326936410171
-      ConcavePawn_1: -3821546014351083993
-      ConcavePawn_2: -5024536986433438495
-      ConcavePawn_3: -2475663856683694785
+      ConcavePawn (1)_0: 8206882486010722110
+      ConcavePawn (1)_1: 8681727540854981480
+      ConcavePawn (1)_2: 1534781740747731349
+      ConcavePawn (1)_3: 4180042392949744490
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

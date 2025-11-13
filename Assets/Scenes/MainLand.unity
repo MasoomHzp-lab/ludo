@@ -3533,12 +3533,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   diceRollingSound: {fileID: 8300000, guid: 0fbf2bc290e9f5cf59433ea050c828b4, type: 3}
   diceSides:
-  - {fileID: 7143586373401363173, guid: 3a1b399af3adea44594515703ec3246b, type: 3}
-  - {fileID: -5081325018161094028, guid: cefcc192ef83b6946ba76f6adb0465eb, type: 3}
-  - {fileID: 7822112587111204412, guid: 088a82aa7adb2a445983f65e0a6fabf8, type: 3}
-  - {fileID: 8720490015424529263, guid: 592268e07e2fd9548b18a419a49f5a12, type: 3}
-  - {fileID: -310020832471473445, guid: 178aabc6236bc054abbd85d8f14f94cf, type: 3}
-  - {fileID: -2705572422694036408, guid: 777801d68f4eaf64a93892d8c097348d, type: 3}
+  - {fileID: 5036830441464340140, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
+  - {fileID: -6665851039016111142, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
+  - {fileID: -220290015429392586, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
+  - {fileID: 2799923516249797802, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
+  - {fileID: 8016136836408318676, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
+  - {fileID: -7335487244395197584, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
   diceValues: 010000000200000003000000040000000500000006000000
   diceImage: {fileID: 1708935305}
   rollDuration: 0.8
@@ -8345,7 +8345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 7143586373401363173, guid: 3a1b399af3adea44594515703ec3246b, type: 3}
+  m_Sprite: {fileID: -7335487244395197584, guid: 12fc274b168b790cc92aa3f122640b7c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
