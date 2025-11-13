@@ -60,12 +60,37 @@ public class Dice : MonoBehaviour
 
         }
 
-        idx = UnityEngine.Random.Range(0, diceSides.Length);
-        if (diceImage) diceImage.sprite = diceSides[idx];
+       int forced;
+       int steps;
 
-        int steps = (diceValues != null && diceValues.Length == diceSides.Length)
-            ? diceValues[idx]
-            : (idx + 1); // fallback
+        if (CheatManager.Instance != null && CheatManager.Instance.TryConsumeForcedRoll(out forced))
+        {
+            // مقدار تاس را زورکی از چیت می‌گیریم
+            steps = Mathf.Clamp(forced, 1, 6);
+
+            // پیدا کردن شاخص اسپرایت متناظر با مقدار steps
+            int cheatIdx = -1;
+            if (diceValues != null && diceValues.Length == diceSides.Length)
+            {
+                for (int i = 0; i < diceValues.Length; i++)
+                {
+                    if (diceValues[i] == steps) { cheatIdx = i; break; }
+                }
+            }
+            if (cheatIdx < 0) cheatIdx = Mathf.Clamp(steps - 1, 0, diceSides.Length - 1);
+
+            if (diceImage) diceImage.sprite = diceSides[cheatIdx];
+        }
+        else
+        {
+            // حالت عادی (تصادفی)
+            idx = UnityEngine.Random.Range(0, diceSides.Length);
+            if (diceImage) diceImage.sprite = diceSides[idx];
+
+            steps = (diceValues != null && diceValues.Length == diceSides.Length)
+                ? diceValues[idx]
+                : (idx + 1);
+        }
 
         OnDiceRolled?.Invoke(steps);
         isRolling = false;

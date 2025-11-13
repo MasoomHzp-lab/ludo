@@ -12,6 +12,13 @@ public class GameManager : MonoBehaviour
     {
         I = this;
 
+        if (turnTimer != null)
+    {
+        // وقتی تایمر تموم شد → نوبت بسوزه
+       
+    }
+
+
         if (dice == null)
             Debug.LogError("[GameManager] Dice is not assigned.");
 
@@ -30,6 +37,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Rules")]
     public RulesManager rules; // ← در Inspector ست کن
+
+
+    [Header("Turn Timer")]
+    public TurnTimer turnTimer; // در Inspector ست کن
+    public float turnSeconds = 20f;
 
     // بازیکن فعلی
     public PlayerController CurrentPlayer => players.Count > 0 ? players[currentPlayerIndex] : null;
@@ -143,6 +155,11 @@ public class GameManager : MonoBehaviour
     }
 
         canRoll = true; // بازیکن جدید می‌تواند تاس بیندازد
+
+        // شروع شمارش معکوس برای بازیکن جدید
+        if (turnTimer != null)
+            turnTimer.StartTimer(turnSeconds);
+
     }
 
     /// <summary>
@@ -155,6 +172,10 @@ public class GameManager : MonoBehaviour
             Debug.Log("[GM] Dice roll ignored (canRoll=false).");
             return;
         }
+
+        if (turnTimer != null && turnTimer.IsRunning)
+         turnTimer.CancelTimer();
+
 
         if (CurrentPlayer == null) return;
 
@@ -256,6 +277,10 @@ public class GameManager : MonoBehaviour
             rolledSix = false;
             pendingSelected = null;
             canRoll = true; // اجازه‌ی تاس دوباره برای همان بازیکن
+
+            if (turnTimer != null)
+                turnTimer.StartTimer(turnSeconds);
+                    
             yield break;    // نوبت عوض نشود
         }
 
@@ -276,6 +301,10 @@ public class GameManager : MonoBehaviour
 
         currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
         SetCurrentPlayer(currentPlayerIndex);
+
+        if (turnTimer != null)
+          turnTimer.StartTimer(turnSeconds);
+
 
         lastDice = 0;
         rolledSix = false;
@@ -327,5 +356,21 @@ public class GameManager : MonoBehaviour
 
         return true;
     }
+
+    public void OnTurnTimeout()
+    {
+        // اگر هنوز اجازه‌ی تاس دادن داشته و کاری نکرده، نوبتش می‌سوزه
+        if (canRoll)
+        {
+            Debug.Log("[GM] Turn timeout → passing turn.");
+            StartCoroutine(PassTurnImmediately());
+        }
+        else
+        {
+            // اگر از قبل رول کرده بوده و تایمر هنوز روشن مونده، بی‌اثر.
+            Debug.Log("[GM] Timeout ignored (already rolled).");
+        }
+    }
+
 
 }
