@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 public class AIController : MonoBehaviour
 {
-  [Header("References")]
+ [Header("References")]
     public GameManager gameManager;   // assign in Inspector
     public Dice dice;                 // assign in Inspector (same dice)
     public PlayerController self;     // this AI's PlayerController
@@ -133,15 +133,30 @@ public class AIController : MonoBehaviour
 
     private Token ChooseToken(List<Token> tokens, int diceVal)
     {
-        // لیست حرکت‌های قانونی با استناد به GM
+        // دسترسی به RulesManager برای چک‌کردن مهره‌های فینیش‌شده
+        var rules = (gameManager != null) ? gameManager.rules : null;
+
+        bool IsFinished(Token t) =>
+            (rules != null && t != null) && rules.IsTokenFinished(t);
+
+        bool IsHomeToken(Token t) =>
+            t != null && !t.isOnBoard && !IsFinished(t);
+
+        // لیست حرکت‌های قانونی با استناد به GM (فقط مهره‌های غیر فینیش‌شده)
         var movable = tokens
-            .Where(t => t != null && gameManager.IsLegalMove(self, t, diceVal))
+            .Where(t => t != null
+                        && !IsFinished(t)
+                        && gameManager.IsLegalMove(self, t, diceVal))
             .ToList();
 
         if (movable.Count == 0) return null;
 
-        bool hasHomeTokens    = tokens.Any(t => t != null && !t.isOnBoard);
-        bool startOccupiedBySelf = tokens.Any(t => t != null && t.isOnBoard && t.currentTileIndex == 0);
+        bool hasHomeTokens        = tokens.Any(IsHomeToken);
+        bool startOccupiedBySelf  = tokens.Any(t =>
+                                    t != null &&
+                                    !IsFinished(t) &&
+                                    t.isOnBoard &&
+                                    t.currentTileIndex == 0);
 
         // ۱) اگر ۶ آمده:
         if (diceVal == 6)
@@ -161,7 +176,7 @@ public class AIController : MonoBehaviour
                 if (preferEnterOnSix && hasHomeTokens)
                 {
                     // یکی از مهره‌های خانه را وارد کن (فقط اگر قانونی باشد که هست چون dice=6)
-                    var offBoard = tokens.FirstOrDefault(t => t != null && !t.isOnBoard);
+                    var offBoard = tokens.FirstOrDefault(IsHomeToken);
                     if (offBoard != null && gameManager.IsLegalMove(self, offBoard, diceVal))
                         return offBoard;
                 }
@@ -194,10 +209,12 @@ public class AIController : MonoBehaviour
             return movable[Random.Range(0, movable.Count)];
     }
 
-    // تخمین سادهٔ فرود آمدن روی دشمن (ایمن‌بودن خانهٔ شروع لحاظ شده)
+    // تخمین سادهٔ فرود آمدن روی دشمن (ایمن‌بودن خانهٔ شروع + نادیده گرفتن مهره‌های فینیش‌شده)
     private bool LandsOnEnemy(Token me, int steps)
     {
-        if (me == null || self == null) return false;
+        if (me == null || self == null || gameManager == null) return false;
+
+        var rules = gameManager.rules;
 
         int targetIndex = me.isOnBoard ? me.currentTileIndex + steps : 0; // ورود با ۶ → 0
         if (targetIndex == 0) return false; // خانه شروع را امن درنظر می‌گیریم
@@ -205,12 +222,14 @@ public class AIController : MonoBehaviour
         foreach (var p in gameManager.players)
         {
             if (p == null || p == self) continue;
+
             foreach (var ot in p.Tokens)
             {
                 if (ot == null || !ot.isOnBoard) continue;
+                if (rules != null && rules.IsTokenFinished(ot)) continue; // حریف‌های فینیش‌شده را نادیده بگیر
+
                 if (ot.currentTileIndex == targetIndex)
                 {
-                    // اگر خانه امن پیچیده داری، می‌تونی اینجا هم چک اضافه کنی
                     return true;
                 }
             }
