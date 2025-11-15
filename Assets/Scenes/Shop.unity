@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 354345772}
   - component: {fileID: 354345771}
   - component: {fileID: 354345770}
+  - component: {fileID: 354345773}
   m_Layer: 5
   m_Name: item (1)
   m_TagString: Untagged
@@ -456,6 +457,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 354345768}
   m_CullTransparentMesh: 1
+--- !u!114 &354345773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354345768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: LightSky
+  productId: 
+  buyButton: {fileID: 354345770}
 --- !u!1 &385570930
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,6 +520,7 @@ GameObject:
   - component: {fileID: 464575525}
   - component: {fileID: 464575524}
   - component: {fileID: 464575523}
+  - component: {fileID: 464575526}
   m_Layer: 5
   m_Name: item (5)
   m_TagString: Untagged
@@ -614,6 +631,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464575521}
   m_CullTransparentMesh: 1
+--- !u!114 &464575526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464575521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: PurpleSky
+  productId: 
+  buyButton: {fileID: 464575523}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,7 +1738,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: -0.000061035}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1070670259
 MonoBehaviour:
@@ -1892,7 +1924,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u06F0\u06F0\u06F0\u06F6 \uFEEB\uFEB0\uFE8D\uFEAD \uFE97\uFEEE\uFEE3\uFE8E\uFEE5"
+  m_text: "\uFEA7\uFEAE\uFBFE\uFEAA\uFE8D\uFEAD\uFBFC \uFEB7\uFEAA\uFEE9"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
   m_sharedMaterial: {fileID: -4199298345358025927, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
@@ -1965,7 +1997,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   preserveNumbers: 0
   farsi: 1
-  originalText: "6000 \u0647\u0632\u0627\u0631 \u062A\u0648\u0645\u0627\u0646"
+  originalText: "\u062E\u0631\u06CC\u062F\u0627\u0631\u06CC \u0634\u062F\u0647"
   fixTags: 1
   forceFix: 0
 --- !u!222 &1326552306
@@ -2204,6 +2236,7 @@ GameObject:
   - component: {fileID: 1391950618}
   - component: {fileID: 1391950617}
   - component: {fileID: 1391950616}
+  - component: {fileID: 1391950619}
   m_Layer: 5
   m_Name: item (3)
   m_TagString: Untagged
@@ -2314,6 +2347,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1391950614}
   m_CullTransparentMesh: 1
+--- !u!114 &1391950619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391950614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkBlueSky
+  productId: 
+  buyButton: {fileID: 1391950616}
 --- !u!1 &1398948956
 GameObject:
   m_ObjectHideFlags: 0
@@ -2792,6 +2840,7 @@ GameObject:
   - component: {fileID: 1494232215}
   - component: {fileID: 1494232214}
   - component: {fileID: 1494232213}
+  - component: {fileID: 1494232216}
   m_Layer: 5
   m_Name: item (6)
   m_TagString: Untagged
@@ -2902,6 +2951,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1494232211}
   m_CullTransparentMesh: 1
+--- !u!114 &1494232216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494232211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: Sea
+  productId: 
+  buyButton: {fileID: 1494232213}
 --- !u!1 &1505041077
 GameObject:
   m_ObjectHideFlags: 0
@@ -3120,7 +3184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -317.7483, y: 499.99994}
+  m_AnchoredPosition: {x: -318.00052, y: 803.4897}
   m_SizeDelta: {x: 318, y: 900}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1572114062
@@ -3147,6 +3211,51 @@ MonoBehaviour:
   m_Spacing: {x: 20, y: 35}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1611977559
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1611977561}
+  - component: {fileID: 1611977560}
+  m_Layer: 0
+  m_Name: BazaarPayment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1611977560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611977559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f573eb1124d6e34d8980a198af2af36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  applicationPublicKey: 
+--- !u!4 &1611977561
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611977559}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 253.01048, y: 116.48602, z: -1.8116112}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1628696888
 GameObject:
   m_ObjectHideFlags: 0
@@ -3159,6 +3268,7 @@ GameObject:
   - component: {fileID: 1628696892}
   - component: {fileID: 1628696891}
   - component: {fileID: 1628696890}
+  - component: {fileID: 1628696893}
   m_Layer: 5
   m_Name: item
   m_TagString: Untagged
@@ -3269,6 +3379,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1628696888}
   m_CullTransparentMesh: 1
+--- !u!114 &1628696893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1628696888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: Forest
+  productId: 
+  buyButton: {fileID: 1628696890}
 --- !u!1 &1788963499
 GameObject:
   m_ObjectHideFlags: 0
@@ -3497,6 +3622,7 @@ GameObject:
   - component: {fileID: 1816871208}
   - component: {fileID: 1816871207}
   - component: {fileID: 1816871206}
+  - component: {fileID: 1816871209}
   m_Layer: 5
   m_Name: item (2)
   m_TagString: Untagged
@@ -3607,6 +3733,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1816871204}
   m_CullTransparentMesh: 1
+--- !u!114 &1816871209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816871204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkSky
+  productId: 
+  buyButton: {fileID: 1816871206}
 --- !u!1 &1936280696
 GameObject:
   m_ObjectHideFlags: 0
@@ -3619,6 +3760,7 @@ GameObject:
   - component: {fileID: 1936280700}
   - component: {fileID: 1936280699}
   - component: {fileID: 1936280698}
+  - component: {fileID: 1936280701}
   m_Layer: 5
   m_Name: item (7)
   m_TagString: Untagged
@@ -3729,6 +3871,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936280696}
   m_CullTransparentMesh: 1
+--- !u!114 &1936280701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936280696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: Wooden
+  productId: 
+  buyButton: {fileID: 1936280698}
 --- !u!1 &2004154393
 GameObject:
   m_ObjectHideFlags: 0
@@ -3741,6 +3898,7 @@ GameObject:
   - component: {fileID: 2004154397}
   - component: {fileID: 2004154396}
   - component: {fileID: 2004154395}
+  - component: {fileID: 2004154398}
   m_Layer: 5
   m_Name: item (4)
   m_TagString: Untagged
@@ -3851,6 +4009,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004154393}
   m_CullTransparentMesh: 1
+--- !u!114 &2004154398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004154393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5398210ca2623354fb8ecedd111c8f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkBlueSky2
+  productId: 
+  buyButton: {fileID: 2004154395}
 --- !u!1 &2057948860
 GameObject:
   m_ObjectHideFlags: 0
@@ -4113,3 +4286,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 2072133724}
   - {fileID: 1435909504}
+  - {fileID: 1611977561}
