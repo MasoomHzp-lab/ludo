@@ -315,47 +315,59 @@ public class GameManager : MonoBehaviour
     }
 
     // ====== بررسی‌های قانونی ساده ======
-    private bool HasLegalMove(PlayerController player, int steps)
+    bool HasLegalMove(PlayerController player, int steps)
+{
+    if (player == null) return false;
+    if (player.Tokens == null || player.Tokens.Count == 0) return false;
+
+    // اگر ورود فقط با ۶ است و ۶ نیامده، حداقل باید یک توکن روی بورد باشد
+    if (enterOnlyOnSix && steps != 6)
     {
-        if (player == null) return false;
-        if (player.Tokens == null || player.Tokens.Count == 0) return false;
-
-        // اگر ورود فقط با ۶ است و ۶ نیامده، حداقل باید یک توکن روی بورد باشد
-        if (enterOnlyOnSix && steps != 6)
-        {
-            bool anyOnBoard = false;
-            foreach (var t in player.Tokens)
-                if (t != null && t.isOnBoard) { anyOnBoard = true; break; }
-            if (!anyOnBoard) return false;
-        }
-
-        // اگر حتی یک توکن حرکت قانونی داشته باشد، true
+        bool anyOnBoard = false;
         foreach (var t in player.Tokens)
-            if (t != null && IsLegalMove(player, t, steps))
-                return true;
-
-        return false;
+            if (t != null && t.isOnBoard) { anyOnBoard = true; break; }
+        if (!anyOnBoard) return false;
     }
+
+    // اگر حتی یک توکن حرکت قانونی داشته باشد، true
+    foreach (var t in player.Tokens)
+    {
+        if (t == null) continue;
+
+        // ⬅ این خط جدید: مهره‌های تمام‌شده را نادیده بگیر
+        if (rules != null && rules.IsTokenFinished(t)) 
+            continue;
+
+        if (IsLegalMove(player, t, steps))
+            return true;
+    }
+
+    return false;
+}
+
 
     // public تا AI بتواند صدا بزند
     public bool IsLegalMove(PlayerController player, Token token, int steps)
-    {
-        if (player == null || token == null) return false;
+{
+    if (player == null || token == null) return false;
 
-        // ورود فقط با ۶
-        if (!token.isOnBoard)
-            return (enterOnlyOnSix && steps == 6);
+    // ⬅ مهره‌ای که به پایان رسیده، دیگر هرگز نباید حرکت کند
+    if (rules != null && rules.IsTokenFinished(token))
+        return false;
 
-        if (steps <= 0 || token.isMoving) return false;
+    // ورود فقط با ۶
+    if (!token.isOnBoard)
+        return (enterOnlyOnSix && steps == 6);
 
-        // قانون: باید دقیق برسد (از مسیر نگذرد)
-        var path = player.boardManager.GetFullPath(player.color);
-        int lastIndex = path.Count - 1;
-        if (token.currentTileIndex + steps > lastIndex)
-            return false;
+    if (steps <= 0 || token.isMoving) return false;
 
-        return true;
-    }
+    var path = player.boardManager.GetFullPath(player.color);
+    int lastIndex = path.Count - 1;
+    if (token.currentTileIndex + steps > lastIndex)
+        return false;
+
+    return true;
+}
 
     public void OnTurnTimeout()
     {

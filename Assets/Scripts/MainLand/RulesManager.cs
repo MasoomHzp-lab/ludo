@@ -19,6 +19,9 @@ public class RulesManager : MonoBehaviour
     private readonly HashSet<Token> finishedTokens = new HashSet<Token>();
     private readonly Dictionary<Token, int> homeSlotOfToken = new Dictionary<Token, int>();
 
+    private readonly Dictionary<PlayerColor, int> finishCounters = new Dictionary<PlayerColor, int>();
+
+
     // ======================================
     // Public API (GameManager / others call these)
     // ======================================
@@ -47,26 +50,40 @@ public class RulesManager : MonoBehaviour
         if (path == null || path.Count == 0) return;
 
         int lastIndex = path.Count - 1;
+    Debug.Log($"[Rules] Token {t.name} idx={t.currentTileIndex}, last={lastIndex}, color={pc.color}");
+
+
         if (t.currentTileIndex != lastIndex) return;
+    Debug.Log($"[Rules] FINISH triggered for {t.name} ({pc.color})");
 
-        // خروج از برد و انتقال به FinishBay
-        t.isOnBoard = false;
-        t.isMoving = false;
-        t.currentTileIndex = -999;
 
-        var bay = GetBay(pc.color);
-        if (bay == null || bay.slots == null || bay.slots.Count == 0)
-        {
-            Debug.LogWarning($"[Rules] FinishBay for {pc.color} is not set.");
-            finishedTokens.Add(t);
-            return;
-        }
 
-        int slot = FindFirstFreeFinishSlot(pc, bay);
-        var target = bay.slots[Mathf.Clamp(slot, 0, bay.slots.Count - 1)];
-        if (target != null) t.transform.position = target.position;
+           // خروج از برد و انتقال به FinishBay
+    t.isOnBoard = false;
+    t.isMoving = false;
+    t.currentTileIndex = -999;
 
+    var bay = GetBay(pc.color);
+    if (bay == null || bay.slots == null || bay.slots.Count == 0)
+    {
+        Debug.LogWarning($"[Rules] FinishBay for {pc.color} is not set.");
         finishedTokens.Add(t);
+        return;
+    }
+
+    // ✨ لاجیک جدید: به ازای هر رنگ، به ترتیب توی اسلات‌ها می‌چینیم
+    if (!finishCounters.TryGetValue(pc.color, out var count))
+        count = 0;
+
+    int slotIndex = Mathf.Clamp(count, 0, bay.slots.Count - 1);
+    finishCounters[pc.color] = count + 1;
+
+    var target = bay.slots[slotIndex];
+    if (target != null)
+        t.transform.position = target.position;
+
+    finishedTokens.Add(t);
+
     }
 
     /// به صورت دستی برگرداندن مهره به خانه (اگر جای دیگری لازم داشته باشی)
@@ -108,27 +125,29 @@ public class RulesManager : MonoBehaviour
         return null;
     }
 
-    private int FindFirstFreeFinishSlot(PlayerController pc, FinishBay bay)
-    {
-        int n = bay.slots.Count;
-        if (n <= 0) return 0;
+//     private int FindFirstFreeFinishSlot(PlayerController pc, FinishBay bay)
+//     {
+//         int n = bay.slots.Count;
+//         if (n <= 0) return 0;
 
-        bool[] occupied = new bool[n];
+//         bool[] occupied = new bool[n];
 
-        foreach (var tok in pc.Tokens)
-        {
-            if (tok == null) continue;
-            if (!finishedTokens.Contains(tok)) continue;
+//         foreach (var tok in pc.Tokens)
+//         {
+//             if (tok == null) continue;
+//             if (!finishedTokens.Contains(tok)) continue;
 
-            int idx = NearestIndex(bay.slots, tok.transform.position);
-            if (idx >= 0 && idx < n) occupied[idx = Mathf.Clamp(idx, 0, n - 1)] = true;
-        }
+//             int idx = NearestIndex(bay.slots, tok.transform.position);
+//             if (idx >= 0 && idx < n) occupied[idx = Mathf.Clamp(idx, 0, n - 1)] = true;
+//         }
 
-        for (int i = 0; i < n; i++)
-            if (!occupied[i]) return i;
-
-        return 0;
-    }
+//         for (int i = 0; i < n; i++)
+//             if (!occupied[i]){
+//              Debug.Log($"[Rules] Free finish slot for {pc.color}: {i}");
+//              return i;
+// }
+//         return 0;
+//     }
 
     private int NearestIndex(List<Transform> points, Vector3 pos)
     {
@@ -214,4 +233,28 @@ public class RulesManager : MonoBehaviour
         }
         return bestIdx;
     }
+
+    public void ResetFinishState()
+{
+    finishedTokens.Clear();
+    finishCounters.Clear();
+    // اگه جایی لازم شد خونه‌ها رو هم ریست کنی:
+    // homeSlotOfToken.Clear();
+}
+
+public bool IsTokenFinished(Token t)
+{
+    return t != null && finishedTokens.Contains(t);
+}
+
+
+
+
+
+
+
+
+
+
+
 }
