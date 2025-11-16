@@ -3755,7 +3755,7 @@ Transform:
   m_GameObject: {fileID: 647188342}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.116, y: 1.816, z: 0.023893567}
+  m_LocalPosition: {x: 3.1739998, y: 1.749, z: 0.023893567}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5463,7 +5463,7 @@ Transform:
   m_GameObject: {fileID: 1037572906}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.452, y: 1.832, z: 0.023893567}
+  m_LocalPosition: {x: 2.5099998, y: 1.765, z: 0.023893567}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7269,10 +7269,10 @@ MonoBehaviour:
       - m_Target: {fileID: 498705153}
         m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
         m_MethodName: ClosePanel
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 361943754}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -7303,7 +7303,7 @@ Transform:
   m_GameObject: {fileID: 1434237421}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.443, y: 1.258, z: 0.023893567}
+  m_LocalPosition: {x: 2.501, y: 1.191, z: 0.023893567}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9282,7 +9282,7 @@ Transform:
   m_GameObject: {fileID: 1785033121}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.124, y: 1.225, z: 0.023893567}
+  m_LocalPosition: {x: 3.182, y: 1.158, z: 0.023893567}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
