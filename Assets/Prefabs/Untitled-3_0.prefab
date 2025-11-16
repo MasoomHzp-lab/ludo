@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f333adfe3e823cc45b7c53c5523402ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TokenSound: {fileID: 8300000, guid: 8951445a4c4458ee08c10ae8ade24e20, type: 3}
   color: 2
   currentTileIndex: -1
   isMoving: 0

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Token : MonoBehaviour
 {
+     AudioManager audioManager;
+    public AudioClip TokenSound;
     [HideInInspector] public PlayerColor color;
     [HideInInspector] public int currentTileIndex = -1; // -1 یعنی هنوز روی برد نیست (خانه)
     [HideInInspector] public bool isMoving = false;
@@ -100,10 +102,13 @@ public void SnapToHomeSlot()
                 yield return null;
             }
         }
-
+        PlayTokenSound();
         isMoving = false;
+
+
     }
     public void EnterAtStart()
+
 {
     // فرض: اندیس 0 خانه شروع است؛ اگر تابع اختصاصی داری همان را صدا بزن
     currentTileIndex = 0;
@@ -116,4 +121,21 @@ public void SnapToHomeSlot()
     // اگر اسنپ انیمیشن می‌خواهی، می‌توانی یک کوروتینِ کوتاه با لِرپ بگذاری
     // ولی مهم: steps کم نشود و حرکت جلوتر نرود
 }
+
+ void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        
+    }
+
+     public void PlayTokenSound()
+    {
+
+        AudioManager.Instance.PlaySFX(TokenSound);
+
+
+    }
+
+
+
 }
