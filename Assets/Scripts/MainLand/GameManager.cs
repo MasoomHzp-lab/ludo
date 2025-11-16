@@ -347,27 +347,85 @@ public class GameManager : MonoBehaviour
 
 
     // public تا AI بتواند صدا بزند
-    public bool IsLegalMove(PlayerController player, Token token, int steps)
+ public bool IsLegalMove(PlayerController player, Token token, int steps)
 {
     if (player == null || token == null) return false;
+    if (steps <= 0 || token.isMoving) return false;
 
-    // ⬅ مهره‌ای که به پایان رسیده، دیگر هرگز نباید حرکت کند
+    // مهره‌ای که فینیش شده، دیگه نباید حرکت کنه
     if (rules != null && rules.IsTokenFinished(token))
         return false;
 
-    // ورود فقط با ۶
+    var bm = player.boardManager;
+    if (bm == null) return false;
+
+    var path = bm.GetFullPath(player.color);
+    if (path == null || path.Count == 0) return false;
+
+    int lastIndex = path.Count - 1;
+
+    // اگر هنوز روی برد نیست → فقط با ۶ اجازه‌ی ورود
     if (!token.isOnBoard)
         return (enterOnlyOnSix && steps == 6);
 
-    if (steps <= 0 || token.isMoving) return false;
+    int currentIndex = token.currentTileIndex;
+    int targetIndex  = currentIndex + steps;
 
-    var path = player.boardManager.GetFullPath(player.color);
-    int lastIndex = path.Count - 1;
-    if (token.currentTileIndex + steps > lastIndex)
+    // ۱) اصلاً نباید از آخر مسیر رد بشه
+    if (targetIndex > lastIndex)
         return false;
 
+    // ۲) منطق راهروی آخر (خونه‌های رنگی تا مرکز / خونه‌های آخر)
+    int homeCount = 0;
+    switch (player.color)
+    {
+        case PlayerColor.Red:    homeCount = bm.redHome    != null ? bm.redHome.Count    : 0; break;
+        case PlayerColor.Blue:   homeCount = bm.blueHome   != null ? bm.blueHome.Count   : 0; break;
+        case PlayerColor.Yellow: homeCount = bm.yellowHome != null ? bm.yellowHome.Count : 0; break;
+        case PlayerColor.Green:  homeCount = bm.greenHome  != null ? bm.greenHome.Count  : 0; break;
+    }
+
+    if (homeCount > 0)
+    {
+        int homeStartIndex = path.Count - homeCount;
+
+        // فقط وقتی مهمه که حرکت قراره وارد این بخش آخر بشه یا داخلش ادامه پیدا کنه
+        if (targetIndex >= homeStartIndex)
+        {
+            // نزدیک‌ترین مهره‌ی خودت که جلوتر از این مهره تو راهروی آخر وایساده
+            int nearestBlocker = int.MaxValue;
+
+            foreach (var other in player.Tokens)
+            {
+                if (other == null) continue;
+                if (!other.isOnBoard) continue;
+                if (other == token) continue;
+
+                int idx = other.currentTileIndex;
+
+                // فقط مهره‌هایی که داخل راهروی آخر هستن و جلوتر از این مهره‌ان
+                if (idx >= homeStartIndex && idx > currentIndex)
+                {
+                    if (idx < nearestBlocker)
+                        nearestBlocker = idx;
+                }
+            }
+
+            // اگه بلاکری هست: حداکثر تا خونه‌ی قبلش می‌تونی بری
+            if (nearestBlocker != int.MaxValue)
+            {
+                int maxAllowed = nearestBlocker - 1;
+                if (targetIndex > maxAllowed)
+                    return false;
+            }
+        }
+    }
+
+    // بیرون از راهروی آخر → مثل قبل، استک هم‌رنگ آزاده
     return true;
 }
+
+
 
     public void OnTurnTimeout()
     {

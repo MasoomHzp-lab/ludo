@@ -142,8 +142,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.73499995
+  m_Offset: {x: 0.0060233804, y: -0.002007766}
+  m_Radius: 0.24508941
 --- !u!114 &4318026265207403735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,5 +158,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pulseSpeed: 2
   pulseAmount: 0.2
-  glowColor: {r: 0.9716981, g: 0.8110714, b: 0.2704254, a: 1}
-  glowIntensity: 2
