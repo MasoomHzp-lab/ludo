@@ -38,53 +38,33 @@ public class RulesManager : MonoBehaviour
     }
 
     /// وقتی مهره به آخر مسیر خودش رسید (آخر FullPath)
-    public void HandleIfFinished(Token t)
-    {
-        if (t == null || t.owner == null || !t.isOnBoard) return;
+public void HandleIfFinished(Token t)
+{
+    if (t == null || t.owner == null || !t.isOnBoard) return;
 
-        var pc = t.owner;
-        var bm = pc.boardManager;
-        if (bm == null) return;
+    var pc = t.owner;
+    var bm = pc.boardManager;
+    if (bm == null) return;
 
-        var path = bm.GetFullPath(pc.color);
-        if (path == null || path.Count == 0) return;
+    var path = bm.GetFullPath(pc.color);
+    if (path == null || path.Count == 0) return;
 
-        int lastIndex = path.Count - 1;
+    int lastIndex = path.Count - 1;
     Debug.Log($"[Rules] Token {t.name} idx={t.currentTileIndex}, last={lastIndex}, color={pc.color}");
 
+    // فقط وقتی دقیقاً روی آخرین خونه‌ی مسیر خودش ایستاده
+    if (t.currentTileIndex != lastIndex) return;
 
-        if (t.currentTileIndex != lastIndex) return;
     Debug.Log($"[Rules] FINISH triggered for {t.name} ({pc.color})");
 
-
-
-           // خروج از برد و انتقال به FinishBay
-    t.isOnBoard = false;
+    // ✅ مهره همین‌جا روی بورد می‌مونه، فقط «فینیش» می‌شود
     t.isMoving = false;
-    t.currentTileIndex = -999;
+    // t.isOnBoard را دست نمی‌زنیم تا برای بقیه مهره‌ها به عنوان سد دیده شود
 
-    var bay = GetBay(pc.color);
-    if (bay == null || bay.slots == null || bay.slots.Count == 0)
-    {
-        Debug.LogWarning($"[Rules] FinishBay for {pc.color} is not set.");
+    if (!finishedTokens.Contains(t))
         finishedTokens.Add(t);
-        return;
-    }
+}
 
-    // ✨ لاجیک جدید: به ازای هر رنگ، به ترتیب توی اسلات‌ها می‌چینیم
-    if (!finishCounters.TryGetValue(pc.color, out var count))
-        count = 0;
-
-    int slotIndex = Mathf.Clamp(count, 0, bay.slots.Count - 1);
-    finishCounters[pc.color] = count + 1;
-
-    var target = bay.slots[slotIndex];
-    if (target != null)
-        t.transform.position = target.position;
-
-    finishedTokens.Add(t);
-
-    }
 
     /// به صورت دستی برگرداندن مهره به خانه (اگر جای دیگری لازم داشته باشی)
     public void SendTokenHome(Token t)
