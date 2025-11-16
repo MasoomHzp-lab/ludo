@@ -12,7 +12,7 @@ public class ButtonsScripts : MonoBehaviour
 
     }
 
-    public void ClosePanel()
+    public void ClosePanel(GameObject panel)
     {
 
         Panel.SetActive(false);
