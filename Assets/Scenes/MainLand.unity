@@ -1584,6 +1584,10 @@ MonoBehaviour:
   tokensToWin: 4
   winPanel: {fileID: 1619930214}
   winText: {fileID: 715188503}
+  useLoseLogic: 0
+  humanPlayerColor: 0
+  losePanel: {fileID: 0}
+  loseText: {fileID: 0}
 --- !u!4 &233740451
 Transform:
   m_ObjectHideFlags: 0
@@ -4706,7 +4710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &734284355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9295,10 +9299,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uFEE3\uFE98\uFE8E\uFEB3\uFED4\uFEE2\n\uFE97\uFEEE  \uFE91\uFE8E\uFEA7\uFE98\uFBFD(:"
-  m_isRightToLeft: 1
-  m_fontAsset: {fileID: 11400000, guid: f4c1c82ee38f98546b29681a44190ee1, type: 2}
-  m_sharedMaterial: {fileID: -4884174698607883228, guid: f4c1c82ee38f98546b29681a44190ee1, type: 2}
+  m_text: 'Such a loser
+
+'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: fc272fdd1c5721b49bacba29905ff690, type: 2}
+  m_sharedMaterial: {fileID: -5666497811298292781, guid: fc272fdd1c5721b49bacba29905ff690, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -9368,7 +9374,9 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   preserveNumbers: 0
   farsi: 1
-  originalText: "\u0645\u062A\u0627\u0633\u0641\u0645\n\u062A\u0648  \u0628\u0627\u062E\u062A\u06CC:("
+  originalText: 'Such a loser
+
+'
   fixTags: 1
   forceFix: 0
 --- !u!222 &1569296794
