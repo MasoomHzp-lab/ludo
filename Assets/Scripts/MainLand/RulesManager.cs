@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class RulesManager : MonoBehaviour
 {
+
+     [Header("Win")]
+    public WinManager winManager;
+
        // ---------- Finish Bays ----------
     [System.Serializable]
     public class FinishBay
@@ -40,7 +44,7 @@ public class RulesManager : MonoBehaviour
     /// وقتی مهره به آخر مسیر خودش رسید (آخر FullPath)
 public void HandleIfFinished(Token t)
 {
-    if (t == null || t.owner == null || !t.isOnBoard) return;
+    if (t == null || t.owner == null) return;
 
     var pc = t.owner;
     var bm = pc.boardManager;
@@ -50,20 +54,66 @@ public void HandleIfFinished(Token t)
     if (path == null || path.Count == 0) return;
 
     int lastIndex = path.Count - 1;
+
+    // طول مسیر و وضعیت فعلی مهره
+    Debug.Log($"[Rules] FullPath length for {pc.color} = {path.Count}");
     Debug.Log($"[Rules] Token {t.name} idx={t.currentTileIndex}, last={lastIndex}, color={pc.color}");
 
-    // فقط وقتی دقیقاً روی آخرین خونه‌ی مسیر خودش ایستاده
-    if (t.currentTileIndex != lastIndex) return;
+    // ✅ از این اندیس به بعد، خونه‌های نهایی این رنگ حساب می‌شن
+    int tokensPerPlayer = 4;
+    int finishStartIndex = Mathf.Max(0, lastIndex - (tokensPerPlayer - 1)); 
+    // مثال: 48 خانه → lastIndex = 47 → finishStartIndex = 44
 
-    Debug.Log($"[Rules] FINISH triggered for {t.name} ({pc.color})");
+    // اگر هنوز وارد محدوده‌ی خونه‌های آخر نشده، کاری نکن
+    if (t.currentTileIndex < finishStartIndex)
+        return;
 
-    // ✅ مهره همین‌جا روی بورد می‌مونه، فقط «فینیش» می‌شود
+    // اگر قبلاً به عنوان مهره‌ی تمام‌شده ثبت شده، دوباره کاری نکن
+    if (finishedTokens.Contains(t))
+        return;
+
+    Debug.Log($"[Rules] FINISH zone triggered for {t.name} ({pc.color}) at idx={t.currentTileIndex}");
+
+    // 🔹 پیدا کردن FinishBay مربوط به این رنگ
+    var bay = GetBay(pc.color);
+
+    if (bay != null && bay.slots != null && bay.slots.Count > 0)
+    {
+        // چند تا مهره از این پلیر قبلاً فینیش شدن؟
+        int sameColorFinished = finishedTokens
+            .Count(tok => tok != null && tok.owner == pc);
+
+        // هر مهره روی اسلات بعدی می‌شینه: 0,1,2,3
+        int slotIndex = Mathf.Clamp(sameColorFinished, 0, bay.slots.Count - 1);
+        var slot = bay.slots[slotIndex];
+
+        if (slot != null)
+        {
+            t.transform.position = slot.position;   // انتقال به خونه‌ی نهایی
+        }
+    }
+
+    // این مهره دیگه روی برد مانع حساب نشه
     t.isMoving = false;
-    // t.isOnBoard را دست نمی‌زنیم تا برای بقیه مهره‌ها به عنوان سد دیده شود
+    t.isOnBoard = false;
 
-    if (!finishedTokens.Contains(t))
-        finishedTokens.Add(t);
+    // ثبت به عنوان مهره‌ی فینیش‌شده
+    finishedTokens.Add(t);
+    Debug.Log($"[Rules] Registered FINISH for {t.name} ({pc.color}). Total finished for this color = " +
+              finishedTokens.Count(tok => tok != null && tok.owner == pc));
+
+    // خبر دادن به WinManager
+    if (winManager != null)
+    {
+        Debug.Log("[Rules] Calling WinManager.RegisterFinishedToken for " + t.name);
+        winManager.RegisterFinishedToken(t);
+    }
+    else
+    {
+        Debug.LogWarning("[Rules] winManager is NULL in inspector!");
+    }
 }
+
 
 
     /// به صورت دستی برگرداندن مهره به خانه (اگر جای دیگری لازم داشته باشی)
@@ -105,29 +155,6 @@ public void HandleIfFinished(Token t)
         return null;
     }
 
-//     private int FindFirstFreeFinishSlot(PlayerController pc, FinishBay bay)
-//     {
-//         int n = bay.slots.Count;
-//         if (n <= 0) return 0;
-
-//         bool[] occupied = new bool[n];
-
-//         foreach (var tok in pc.Tokens)
-//         {
-//             if (tok == null) continue;
-//             if (!finishedTokens.Contains(tok)) continue;
-
-//             int idx = NearestIndex(bay.slots, tok.transform.position);
-//             if (idx >= 0 && idx < n) occupied[idx = Mathf.Clamp(idx, 0, n - 1)] = true;
-//         }
-
-//         for (int i = 0; i < n; i++)
-//             if (!occupied[i]){
-//              Debug.Log($"[Rules] Free finish slot for {pc.color}: {i}");
-//              return i;
-// }
-//         return 0;
-//     }
 
     private int NearestIndex(List<Transform> points, Vector3 pos)
     {

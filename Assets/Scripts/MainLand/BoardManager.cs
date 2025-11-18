@@ -185,6 +185,34 @@ public bool TryGetRingId(PlayerColor color, int currentTileIndex, out int ringId
     return true;
 }
 
+// فقط برای دیباگ مسیرها
+[ContextMenu("Debug Ludo Paths")]
+public void DebugLudoPaths()
+{
+    DebugPathForColor(PlayerColor.Blue);
+    DebugPathForColor(PlayerColor.Red);
+    DebugPathForColor(PlayerColor.Yellow);
+    DebugPathForColor(PlayerColor.Green);
+}
+
+private void DebugPathForColor(PlayerColor color)
+{
+    var path = GetFullPath(color);
+    if (path == null)
+    {
+        Debug.LogWarning($"[BoardManager] Path for {color} is NULL!");
+        return;
+    }
+
+    Debug.Log($"[BoardManager] Path for {color} has {path.Count} tiles.");
+
+    for (int i = 0; i < path.Count; i++)
+    {
+        var t = path[i];
+        string name = (t != null) ? t.name : "NULL";
+        Debug.Log($"[BoardManager] {color} [{i}] -> {name}");
+    }
+}
 
 
     private void OnDrawGizmosSelected()
