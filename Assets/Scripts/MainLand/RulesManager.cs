@@ -116,6 +116,7 @@ public void HandleIfFinished(Token t)
 
 
 
+
     /// به صورت دستی برگرداندن مهره به خانه (اگر جای دیگری لازم داشته باشی)
     public void SendTokenHome(Token t)
     {
