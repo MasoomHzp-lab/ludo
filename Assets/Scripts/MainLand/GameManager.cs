@@ -173,10 +173,6 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (turnTimer != null && turnTimer.IsRunning)
-         turnTimer.CancelTimer();
-
-
         if (CurrentPlayer == null) return;
 
         // پس از رول، تا پایان حرکت/پاس نوبت قفل شو
