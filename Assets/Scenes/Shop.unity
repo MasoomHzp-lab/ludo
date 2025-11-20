@@ -361,8 +361,9 @@ GameObject:
   - component: {fileID: 354345771}
   - component: {fileID: 354345770}
   - component: {fileID: 354345773}
+  - component: {fileID: 354345774}
   m_Layer: 5
-  m_Name: item (1)
+  m_Name: LightSky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -432,7 +433,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 354345771}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 354345774}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &354345771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -486,6 +499,21 @@ MonoBehaviour:
   themeId: LightSky
   productId: 
   buyButton: {fileID: 354345770}
+--- !u!114 &354345774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 354345768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: LightSky
+  isPaidTheme: 1
+  productId: 
 --- !u!1 &385570930
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,8 +638,9 @@ GameObject:
   - component: {fileID: 464575524}
   - component: {fileID: 464575523}
   - component: {fileID: 464575526}
+  - component: {fileID: 464575527}
   m_Layer: 5
-  m_Name: item (5)
+  m_Name: PurpleSky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,7 +710,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 464575524}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 464575527}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &464575524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,6 +776,21 @@ MonoBehaviour:
   themeId: PurpleSky
   productId: 
   buyButton: {fileID: 464575523}
+--- !u!114 &464575527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464575521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: PurpleSky
+  isPaidTheme: 0
+  productId: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,6 +1698,7 @@ GameObject:
   - component: {fileID: 815313765}
   - component: {fileID: 815313767}
   - component: {fileID: 815313766}
+  - component: {fileID: 815313768}
   m_Layer: 5
   m_Name: BackButtonImage
   m_TagString: Untagged
@@ -1706,6 +1763,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815313764}
   m_CullTransparentMesh: 1
+--- !u!114 &815313768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815313764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 815313766}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1509008817}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: FirstPage
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1509008817}
+        m_TargetAssemblyTypeName: ButtonsScripts, Assembly-CSharp
+        m_MethodName: PlaySoundButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &816250533
 GameObject:
   m_ObjectHideFlags: 0
@@ -2592,7 +2717,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uFEA7\uFEAE\uFBFE\uFEAA\uFE8D\uFEAD\uFBFC \uFEB7\uFEAA\uFEE9"
+  m_text: "\uFEAD\uFE8D\uFBFE\uFB95\uFE8E\uFEE5"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
   m_sharedMaterial: {fileID: -4199298345358025927, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
@@ -2665,7 +2790,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   preserveNumbers: 0
   farsi: 1
-  originalText: "\u062E\u0631\u06CC\u062F\u0627\u0631\u06CC \u0634\u062F\u0647"
+  originalText: "\u0631\u0627\u06CC\u06AF\u0627\u0646"
   fixTags: 1
   forceFix: 0
 --- !u!222 &1326552306
@@ -2905,8 +3030,9 @@ GameObject:
   - component: {fileID: 1391950617}
   - component: {fileID: 1391950616}
   - component: {fileID: 1391950619}
+  - component: {fileID: 1391950620}
   m_Layer: 5
-  m_Name: item (3)
+  m_Name: DarkBlueSky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2976,7 +3102,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1391950617}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1391950620}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1391950617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3030,6 +3168,21 @@ MonoBehaviour:
   themeId: DarkBlueSky
   productId: 
   buyButton: {fileID: 1391950616}
+--- !u!114 &1391950620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391950614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkBlueSky
+  isPaidTheme: 1
+  productId: 
 --- !u!1 &1398948956
 GameObject:
   m_ObjectHideFlags: 0
@@ -3087,7 +3240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u06F0\u06F0\u06F0\u06F6 \uFEEB\uFEB0\uFE8D\uFEAD \uFE97\uFEEE\uFEE3\uFE8E\uFEE5"
+  m_text: "\uFEAD\uFE8D\uFBFE\uFB95\uFE8E\uFEE5"
   m_isRightToLeft: 1
   m_fontAsset: {fileID: 11400000, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
   m_sharedMaterial: {fileID: -4199298345358025927, guid: b50b2167ec39fef4fac877716af73a11, type: 2}
@@ -3160,7 +3313,7 @@ MonoBehaviour:
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
   preserveNumbers: 0
   farsi: 1
-  originalText: "6000 \u0647\u0632\u0627\u0631 \u062A\u0648\u0645\u0627\u0646"
+  originalText: "\u0631\u0627\u06CC\u06AF\u0627\u0646"
   fixTags: 1
   forceFix: 0
 --- !u!222 &1398948959
@@ -3509,8 +3662,9 @@ GameObject:
   - component: {fileID: 1494232214}
   - component: {fileID: 1494232213}
   - component: {fileID: 1494232216}
+  - component: {fileID: 1494232217}
   m_Layer: 5
-  m_Name: item (6)
+  m_Name: Sea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3580,7 +3734,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1494232214}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1494232217}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1494232214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3634,6 +3800,21 @@ MonoBehaviour:
   themeId: Sea
   productId: 
   buyButton: {fileID: 1494232213}
+--- !u!114 &1494232217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494232211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: Sea
+  isPaidTheme: 1
+  productId: 
 --- !u!1 &1505041077
 GameObject:
   m_ObjectHideFlags: 0
@@ -3784,6 +3965,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1509008816}
+  - component: {fileID: 1509008817}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -3811,6 +3993,19 @@ RectTransform:
   m_AnchoredPosition: {x: -168.5, y: 0}
   m_SizeDelta: {x: 337, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1509008817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1509008815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02687d41f18c8f0a1a45bea9f866e7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Panel: {fileID: 1600147851}
 --- !u!1 &1572114060
 GameObject:
   m_ObjectHideFlags: 0
@@ -4013,7 +4208,7 @@ GameObject:
   - component: {fileID: 1628696890}
   - component: {fileID: 1628696893}
   m_Layer: 5
-  m_Name: item
+  m_Name: Forest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4083,7 +4278,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1628696891}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1628696891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4576,8 +4783,9 @@ GameObject:
   - component: {fileID: 1816871207}
   - component: {fileID: 1816871206}
   - component: {fileID: 1816871209}
+  - component: {fileID: 1816871210}
   m_Layer: 5
-  m_Name: item (2)
+  m_Name: DarkSky
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4647,7 +4855,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1816871207}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1816871210}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1816871207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4701,6 +4921,21 @@ MonoBehaviour:
   themeId: DarkSky
   productId: 
   buyButton: {fileID: 1816871206}
+--- !u!114 &1816871210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1816871204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkSky
+  isPaidTheme: 0
+  productId: 
 --- !u!1 &1936280696
 GameObject:
   m_ObjectHideFlags: 0
@@ -4714,8 +4949,9 @@ GameObject:
   - component: {fileID: 1936280699}
   - component: {fileID: 1936280698}
   - component: {fileID: 1936280701}
+  - component: {fileID: 1936280702}
   m_Layer: 5
-  m_Name: item (7)
+  m_Name: Wooden
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4785,7 +5021,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1936280699}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1936280702}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1936280699
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4839,6 +5087,21 @@ MonoBehaviour:
   themeId: Wooden
   productId: 
   buyButton: {fileID: 1936280698}
+--- !u!114 &1936280702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936280696}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: Wooden
+  isPaidTheme: 1
+  productId: 
 --- !u!1 &2004154393
 GameObject:
   m_ObjectHideFlags: 0
@@ -4852,8 +5115,9 @@ GameObject:
   - component: {fileID: 2004154396}
   - component: {fileID: 2004154395}
   - component: {fileID: 2004154398}
+  - component: {fileID: 2004154399}
   m_Layer: 5
-  m_Name: item (4)
+  m_Name: DarkBlueSky2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4923,7 +5187,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2004154396}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2004154399}
+        m_TargetAssemblyTypeName: ThemeButton, Assembly-CSharp
+        m_MethodName: OnClickSelectTheme
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2004154396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4977,6 +5253,21 @@ MonoBehaviour:
   themeId: DarkBlueSky2
   productId: 
   buyButton: {fileID: 2004154395}
+--- !u!114 &2004154399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2004154393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bcf038f4aa0faa44b49f3e999f995e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themeId: DarkBlueSky2
+  isPaidTheme: 1
+  productId: 
 --- !u!1 &2057948860
 GameObject:
   m_ObjectHideFlags: 0

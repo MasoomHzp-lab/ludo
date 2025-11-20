@@ -620,6 +620,71 @@ RectTransform:
   m_AnchoredPosition: {x: 177.623, y: 1.618}
   m_SizeDelta: {x: 300.87, y: 38.995}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &220669267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 220669269}
+  - component: {fileID: 220669268}
+  m_Layer: 0
+  m_Name: ThemeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &220669268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220669267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d389aa915e6bcc24882b1bc5e4498b79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  themes:
+  - themeId: Forest
+    boardSprite: {fileID: -8996238665415349365, guid: 2ddbf4afccc34f341a0806cafdd82e4d, type: 3}
+  - themeId: LightSky
+    boardSprite: {fileID: 5399487510616254677, guid: 98177e9e9765d97428d6d47e296d4d47, type: 3}
+  - themeId: DarkSky
+    boardSprite: {fileID: 7397510724799418654, guid: 884dd805eeb393a48a24855cf01e0c8e, type: 3}
+  - themeId: DarkBlueSky
+    boardSprite: {fileID: -3955098680470915572, guid: 73c85203c32d339478f7a3e39a13e358, type: 3}
+  - themeId: 'DarkBlueSky2 '
+    boardSprite: {fileID: -7615602405591251712, guid: 7a91f1eb50ab39e4b92a2a6731d22f09, type: 3}
+  - themeId: PurpleSky
+    boardSprite: {fileID: -2093324750932669864, guid: 0413929b8844a454384f0be68d0f7b34, type: 3}
+  - themeId: Sea
+    boardSprite: {fileID: 697817598604000450, guid: f4f45ffc89a691142ab559a0b2d68ef5, type: 3}
+  - themeId: Wooden
+    boardSprite: {fileID: 2410671940745902572, guid: 5268914ec83cbf04b9db9ba31c088974, type: 3}
+  defaultThemeId: DarkSky
+  freeThemeIds:
+  - DarkSky
+  - PurpleSky
+--- !u!4 &220669269
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220669267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 90.4136, y: 343.5532, z: -3.3570585}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &275043656
 GameObject:
   m_ObjectHideFlags: 0
@@ -7165,3 +7230,4 @@ SceneRoots:
   - {fileID: 969649352}
   - {fileID: 14345050}
   - {fileID: 46733046}
+  - {fileID: 220669269}
