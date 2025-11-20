@@ -15,7 +15,6 @@ public class Token : MonoBehaviour
     private BoardManager boardManager;
     [HideInInspector] public PlayerController owner;
     private GameManager gameManager;
-    public RulesManager rulesManager;
 
     public int homeSlot = -1;   // اسلات خانه‌ی اختصاصی این مهره (0..3). -1 یعنی هنوز ست نشده.
 
@@ -71,60 +70,43 @@ public void SnapToHomeSlot()
             gameManager.StartCoroutine(MoveCoroutine(steps)); // از GameManager coroutine اجرا شود
     }
 
-private IEnumerator MoveCoroutine(int steps)
-{
-    isMoving = true;
-
-    // اگر مهره هنوز وارد زمین نشده، اول ببریمش خانه‌ی شروع مسیر
-    if (!isOnBoard)
+    private IEnumerator MoveCoroutine(int steps)
     {
-        currentTileIndex = 0;
-        transform.position = boardManager.GetTilePosition(color, currentTileIndex);
-        isOnBoard = true;
-        steps -= 1;
-    }
+        isMoving = true;
 
-    for (int i = 0; i < steps; i++)
-    {
-        currentTileIndex++;
-
-        var path = boardManager.GetFullPath(color);
-        if (path == null || path.Count == 0)
+        // اگر مهره هنوز وارد زمین نشده، اول ببریمش خانه‌ی شروع مسیر
+        if (!isOnBoard)
         {
-            Debug.LogWarning("[Token] Path is null or empty for color " + color);
-            break;
+            currentTileIndex = 0;
+            transform.position = boardManager.GetTilePosition(color, currentTileIndex);
+            isOnBoard = true;
+            steps -= 1;
+
+
         }
 
-        if (currentTileIndex >= path.Count)
+        for (int i = 0; i < steps; i++)
         {
-            currentTileIndex = path.Count - 1; // رسید به پایان مسیر
-            break;
+            currentTileIndex++;
+            var path = boardManager.GetFullPath(color);
+            if (currentTileIndex >= path.Count)
+            {
+                currentTileIndex = path.Count - 1; // رسید به پایان
+                break;
+            }
+
+            Vector3 target = boardManager.GetTilePosition(color, currentTileIndex);
+            while (Vector3.Distance(transform.position, target) > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5f);
+                yield return null;
+            }
         }
+        PlayTokenSound();
+        isMoving = false;
 
-        Vector3 target = boardManager.GetTilePosition(color, currentTileIndex);
-        while (Vector3.Distance(transform.position, target) > 0.01f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target, Time.deltaTime * 5f);
-            yield return null;
-        }
+
     }
-
-    PlayTokenSound();
-    isMoving = false;
-
-    // ✅ بعد از تمام شدن حرکت، قوانین فینیش شدن را چک کن
-    if (rulesManager != null)
-    {
-        Debug.Log("[Token] Move finished, asking RulesManager to check finish for " + name);
-        rulesManager.HandleIfFinished(this);
-    }
-    else
-    {
-        Debug.LogWarning("[Token] rulesManager در Token ست نشده!");
-    }
-}
-
-
     public void EnterAtStart()
 
 {
@@ -141,13 +123,10 @@ private IEnumerator MoveCoroutine(int steps)
 }
 
  void Awake()
-{
-    audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
-
-    if (rulesManager == null)
-        rulesManager = FindObjectOfType<RulesManager>();   // 👈 این دو خط جدید
-}
-
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+        
+    }
 
      public void PlayTokenSound()
     {
