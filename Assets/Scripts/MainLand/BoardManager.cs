@@ -139,7 +139,6 @@ public class BoardManager : MonoBehaviour
         return r < 0 ? r + m : r;
     }
 
-#if UNITY_EDITOR
     private void OnValidate()
     {
         if (commonPath.Count == 0)
@@ -228,5 +227,5 @@ private void DebugPathForColor(PlayerColor color)
             }
         }
     }
-#endif
+
 }

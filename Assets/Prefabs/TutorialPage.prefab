@@ -179,8 +179,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uFEE3\uFE98\uFEE6 \uFEAD\uFE8D\uFEEB\uFEE8\uFEE4\uFE8E"
   m_isRightToLeft: 1
-  m_fontAsset: {fileID: 11400000, guid: 3faf1d8724d3ce8879fb2763d5fff789, type: 2}
-  m_sharedMaterial: {fileID: -8230774282453361482, guid: 3faf1d8724d3ce8879fb2763d5fff789, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: f4c1c82ee38f98546b29681a44190ee1, type: 2}
+  m_sharedMaterial: {fileID: -4884174698607883228, guid: f4c1c82ee38f98546b29681a44190ee1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
