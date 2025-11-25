@@ -108,6 +108,7 @@ MonoBehaviour:
   isMoving: 0
   isOnBoard: 0
   owner: {fileID: 0}
+  rulesManager: {fileID: 0}
   homeSlot: -1
 --- !u!58 &2472882673371945570
 CircleCollider2D:
@@ -158,4 +159,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pulseSpeed: 2
-  pulseAmount: 0.2
+  pulseAmount: 0.05
